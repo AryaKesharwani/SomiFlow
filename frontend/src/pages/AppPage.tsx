@@ -254,7 +254,7 @@ export default function AppPage() {
                   </svg>
                 </div>
                 <span className="text-2xl font-black text-slate-900 tracking-tight">
-                  DeFlow
+                  SomiFlow
                 </span>
               </div>
               <div className="flex items-center gap-4">
@@ -284,7 +284,7 @@ export default function AppPage() {
                 Workflows Dashboard
               </h1>
               <p className="text-gray-600">
-                Manage and monitor your DeFi automation workflows
+                Manage and monitor your SomiFlow automation workflows
               </p>
             </div>
             <button

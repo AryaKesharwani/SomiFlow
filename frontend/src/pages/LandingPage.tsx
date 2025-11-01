@@ -37,7 +37,7 @@ export default function LandingPage() {
               className="text-2xl font-black tracking-tight text-slate-900"
               style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
             >
-              DeFlow
+              SoniFlow
             </span>
           </div>
           <div className="flex gap-8 items-center">
@@ -339,7 +339,7 @@ export default function LandingPage() {
                 to="/app"
                 className="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-orange-500 to-amber-600 text-white rounded-xl font-black text-xl hover:shadow-2xl transition shadow-xl border-2 border-orange-600/20"
               >
-                <span>Launch DeFlow</span>
+                <span>Launch SomiFlow</span>
                 <svg
                   className="w-6 h-6"
                   fill="none"
