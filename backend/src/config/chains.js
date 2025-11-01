@@ -112,6 +112,13 @@ export const SUPPORTED_CHAINS = {
     nativeCurrency: "MATIC",
     wrappedNativeToken: "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889", // WMATIC
   },
+  somnia: {
+    chainId: 23111,
+    name: "Somnia Testnet",
+    rpcUrl: process.env.RPC_SOMNIA || "https://rpc-testnet.somnia.network",
+    nativeCurrency: "STT",
+    wrappedNativeToken: "0x4200000000000000000000000000000000000006", // WSTT (placeholder, update when available)
+  },
 };
 
 // Helper function to get chain config by name
@@ -160,6 +167,7 @@ export const TESTNET_CHAINS = [
   "optimismsepolia",
   "avalanchefuji",
   "polygonmumbai",
+  "somnia",
 ];
 
 /**

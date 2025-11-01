@@ -161,6 +161,39 @@ export async function generateSignedUniswapQuote({
 }
 
 /**
+ * Get Somnia Ability Client
+ * 
+ * Note: This uses the local Somnia ability package.
+ * To use this, ensure the somnia-ability package is built:
+ *   cd src/abilities/somnia-ability
+ *   npm install
+ *   npm run build
+ */
+export async function getSomniaAbilityClient() {
+  try {
+    // Try to import the local Somnia ability
+    // In production, this would be: import { bundledVincentAbility as somniaBundledAbility } from '@ethonline/somnia-ability';
+    const { bundledVincentAbility: somniaBundledAbility } = await import('../abilities/somnia-ability/src/index.js');
+    const signer = getDelegateeSigner();
+    
+    return getVincentAbilityClient({
+      bundledVincentAbility: somniaBundledAbility,
+      ethersSigner: signer,
+    });
+  } catch (error) {
+    console.warn('⚠️  Somnia ability not available. Using EVM transaction signer as fallback.');
+    // Fallback to using EVM transaction signer for Somnia
+    const { bundledVincentAbility: evmTxSignerAbility } = await import('@lit-protocol/vincent-ability-evm-transaction-signer');
+    const signer = getDelegateeSigner();
+    
+    return getVincentAbilityClient({
+      bundledVincentAbility: evmTxSignerAbility,
+      ethersSigner: signer,
+    });
+  }
+}
+
+/**
  * Disconnect from LIT Network
  */
 export async function disconnectLitClient() {
