@@ -1,0 +1,35 @@
+{
+  "name": "@ethonline/somnia-ability",
+  "version": "0.0.1",
+  "description": "Vincent Ability for Somnia Testnet - Native token transfers and basic interactions",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "vincent",
+    "ability",
+    "somnia",
+    "testnet",
+    "ethereum",
+    "evm"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@lit-protocol/vincent-ability-sdk": "^1.0.0",
+    "ethers": "^5.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
+}
