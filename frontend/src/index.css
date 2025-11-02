@@ -80,3 +80,20 @@ input:focus, textarea:focus, select:focus {
 .animate-spotlight {
   animation: spotlight 2s ease 0.25s 1 forwards;
 }
+
+/* Hide default cursor on landing page for custom cursor effect */
+.min-h-screen:has(.custom-cursor) {
+  cursor: none;
+}
+
+.min-h-screen:has(.custom-cursor) a,
+.min-h-screen:has(.custom-cursor) button {
+  cursor: none;
+}
+
+/* Ensure custom cursor is above everything */
+.custom-cursor,
+.custom-cursor-dot {
+  z-index: 9999;
+  pointer-events: none;
+}
