@@ -8,6 +8,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import logo from "../assets/logo.svg";
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -187,28 +188,10 @@ export default function LandingPage() {
           <div className="flex items-center gap-3">
             <div ref={logoRef} className="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg flex items-center justify-center shadow-md relative overflow-hidden border border-gray-700">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(255,255,255,0.1),transparent)]"></div>
-              <svg
-                className="w-6 h-6 text-gray-300 relative z-10"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2.5}
-                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                />
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2.5}
-                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
+              <img src={logo} alt="SomiFlow" className="w-8 h-8 relative z-10" />
             </div>
-            <span className="text-2xl font-black tracking-tight text-gray-100">
-              SoniFlow
+            <span className="text-2xl font-black tracking-tight text-gray-100 font-primary">
+              SomniFlow
             </span>
           </div>
           <div className="flex gap-8 items-center">
@@ -239,20 +222,7 @@ export default function LandingPage() {
 
         <div className="max-w-5xl mx-auto text-center mt-28 relative z-20">
           <div ref={badgeRef} className="inline-flex items-center gap-2 px-4 py-2 bg-gray-800 border border-gray-700 rounded-full mb-8">
-            <svg
-              className="w-4 h-4 text-gray-400 animate-spin"
-              style={{ animationDuration: "3s" }}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-              />
-            </svg>
+            <img src={logo} alt="SomiFlow" className="w-4 h-4 text-gray-400 animate-spin" style={{ animationDuration: "3s" }} />
             <span className="text-sm text-gray-300 uppercase tracking-wider" style={{ fontWeight: 500, fontStyle: 'normal' }}>
               Autonomous DeFi Automation
             </span>
@@ -557,20 +527,7 @@ export default function LandingPage() {
             <div className="absolute top-4 right-4 w-32 h-32 bg-gray-700/20 rounded-full blur-3xl"></div>
             <div className="absolute bottom-4 left-4 w-40 h-40 bg-gray-600/20 rounded-full blur-3xl"></div>
             <div className="relative z-10">
-              <svg
-                className="w-16 h-16 text-gray-400 mx-auto mb-6 animate-spin"
-                style={{ animationDuration: "6s" }}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                />
-              </svg>
+              <img src={logo} alt="SomiFlow" className="w-16 h-16 text-gray-400 mx-auto mb-6 animate-spin" style={{ animationDuration: "6s" }} />
               <h2 className="text-4xl font-black text-gray-100 mb-4 tracking-tight">
                 Set Your DeFi in Motion
               </h2>
@@ -607,19 +564,7 @@ export default function LandingPage() {
           <div className="flex justify-between items-center mb-8">
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg flex items-center justify-center shadow-sm border border-gray-700">
-                <svg
-                  className="w-5 h-5 text-gray-300"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-                  />
-                </svg>
+                <img src={logo} alt="SomiFlow" className="w-5 h-5 text-gray-300" />
               </div>
               <span className="font-black text-gray-100">DeFlow</span>
             </div>
