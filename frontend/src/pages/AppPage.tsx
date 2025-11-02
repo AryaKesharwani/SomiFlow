@@ -6,6 +6,7 @@ import { apiClient } from "../lib/apiClient";
 import { showToast } from "../lib/toast";
 import { useTransactionPopup } from "@blockscout/app-sdk";
 import { Terminal, TypingAnimation, AnimatedSpan } from "../components/ui/terminal";
+import { Spotlight } from "../components/ui/spotlight";
 
 interface Workflow {
   _id: string;
@@ -231,14 +232,25 @@ export default function AppPage() {
 
   return (
     <ProtectedRoute>
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/40 to-slate-100">
-        <nav className="bg-white border-b border-gray-200 shadow-sm">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="flex justify-between items-center h-16">
+      <div className="min-h-screen bg-[#0a0a0a] relative overflow-hidden">
+        {/* Grid Background */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#1a1a1a_1px,transparent_1px),linear-gradient(to_bottom,#1a1a1a_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]" />
+        
+        {/* Spotlight Effect */}
+        <Spotlight
+          className="-top-40 left-0 md:left-60 md:-top-20"
+          fill="white"
+        />
+        
+        <div className="relative z-10">
+          <nav className=" backdrop-blur-sm border-b border-gray-500 shadow-sm">
+            <div className="max-w-7xl mx-auto px-6">
+              <div className="flex justify-between items-center h-16">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-600 rounded-lg flex items-center justify-center shadow-md">
+                <div className="w-10 h-10 bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg flex items-center justify-center shadow-md relative overflow-hidden border border-gray-700">
+                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(255,255,255,0.1),transparent)]"></div>
                   <svg
-                    className="w-6 h-6 text-white"
+                    className="w-6 h-6 text-gray-300 relative z-10"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -251,21 +263,21 @@ export default function AppPage() {
                     />
                   </svg>
                 </div>
-                <span className="text-2xl font-black text-slate-900 tracking-tight">
+                <span className="text-2xl font-black text-gray-100 tracking-tight">
                   SomiFlow
                 </span>
               </div>
               <div className="flex items-center gap-4">
                 <div className="text-sm">
-                  <div className="text-gray-500">Connected</div>
-                  <div className="font-mono text-xs text-gray-900">
+                  <div className="text-gray-400">Connected</div>
+                  <div className="font-mono text-xs text-gray-200">
                     {user?.ethAddress.slice(0, 6)}...
                     {user?.ethAddress.slice(-4)}
                   </div>
                 </div>
                 <button
                   onClick={logout}
-                  className="px-4 py-2 text-sm font-bold text-gray-700 hover:text-orange-600 transition"
+                  className="px-4 py-2 text-sm font-bold text-gray-300 hover:text-gray-100 transition"
                 >
                   Disconnect
                 </button>
@@ -278,16 +290,16 @@ export default function AppPage() {
           {/* Header */}
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h1 className="text-4xl font-black text-gray-900 mb-2">
+              <h1 className="text-4xl font-black text-gray-100 mb-2">
                 Workflows Dashboard
               </h1>
-              <p className="text-gray-600">
+              <p className="text-gray-400">
                 Manage and monitor your SomiFlow automation workflows
               </p>
             </div>
             <button
               onClick={() => navigate("/workflow/new")}
-              className="px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-600 text-white font-bold rounded-lg hover:shadow-lg transition transform hover:scale-105"
+              className="px-6 py-3 bg-gray-800 hover:bg-gray-700 text-gray-100 font-bold rounded-lg hover:shadow-lg transition transform hover:scale-105 border border-gray-700"
             >
               + Create Workflow
             </button>
@@ -360,14 +372,14 @@ export default function AppPage() {
           </div>
 
           {/* Account Information Card - Compact */}
-          <div className="bg-white rounded-xl shadow-md mb-8 overflow-hidden">
+          <div className="bg-gray-900/80 backdrop-blur-sm rounded-xl shadow-md mb-8 overflow-hidden border border-gray-800">
             {/* Header */}
-            <div className="bg-gradient-to-r from-slate-800 to-slate-900 px-6 py-4 text-white">
+            <div className="bg-gradient-to-r from-gray-800 to-gray-900 px-6 py-4 border-b border-gray-800">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                  <div className="w-10 h-10 bg-gray-700/50 backdrop-blur-sm rounded-lg flex items-center justify-center border border-gray-700">
                     <svg
-                      className="w-5 h-5"
+                      className="w-5 h-5 text-gray-300"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -379,8 +391,8 @@ export default function AppPage() {
                     </svg>
                   </div>
                   <div>
-                    <h2 className="text-lg font-black">Account</h2>
-                    <p className="text-slate-300 text-xs font-mono">
+                    <h2 className="text-lg font-black text-gray-100">Account</h2>
+                    <p className="text-gray-400 text-xs font-mono">
                       {user?.ethAddress.slice(0, 10)}...
                       {user?.ethAddress.slice(-8)}
                     </p>
@@ -417,7 +429,7 @@ export default function AppPage() {
                   <button
                     onClick={handleViewTransactions}
                     disabled={!selectedTxChainId}
-                    className="flex items-center gap-2 px-3 py-1.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-lg transition text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="flex items-center gap-2 px-3 py-1.5 bg-gray-700/50 hover:bg-gray-700 backdrop-blur-sm rounded-lg transition text-xs font-semibold disabled:opacity-50 disabled:cursor-not-allowed text-gray-200 border border-gray-600"
                   >
                     <svg
                       className="w-3.5 h-3.5"
@@ -437,7 +449,7 @@ export default function AppPage() {
 
                   <button
                     onClick={copyAddress}
-                    className="flex items-center gap-2 px-3 py-1.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-lg transition text-xs font-semibold"
+                    className="flex items-center gap-2 px-3 py-1.5 bg-gray-700/50 hover:bg-gray-700 backdrop-blur-sm rounded-lg transition text-xs font-semibold text-gray-200 border border-gray-600"
                   >
                     {copiedAddress ? (
                       <>
@@ -484,10 +496,10 @@ export default function AppPage() {
                   {[...Array(10)].map((_, i) => (
                     <div
                       key={i}
-                      className="animate-pulse p-3 bg-gray-100 rounded-lg"
+                      className="animate-pulse p-3 bg-gray-800 rounded-lg border border-gray-700"
                     >
-                      <div className="h-3 bg-gray-300 rounded w-2/3 mb-2"></div>
-                      <div className="h-5 bg-gray-300 rounded w-full"></div>
+                      <div className="h-3 bg-gray-700 rounded w-2/3 mb-2"></div>
+                      <div className="h-5 bg-gray-700 rounded w-full"></div>
                     </div>
                   ))}
                 </div>
@@ -495,7 +507,7 @@ export default function AppPage() {
                 <>
                   {/* Mainnets */}
                   <div className="mb-4">
-                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 px-1">
+                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 px-1">
                       Mainnets
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
@@ -505,20 +517,20 @@ export default function AppPage() {
                           <button
                             key={balance.chainKey}
                             onClick={() => openExplorer(balance.chainKey)}
-                            className="relative p-3 bg-gradient-to-br from-slate-50 to-slate-100 hover:from-slate-100 hover:to-slate-200 rounded-lg border border-slate-200 hover:border-slate-300 transition text-left group"
+                            className="relative p-3 bg-gradient-to-br from-gray-800 to-gray-900 hover:from-gray-700 hover:to-gray-800 rounded-lg border border-gray-700 hover:border-gray-600 transition text-left group"
                             title={`View ${balance.chainName} on explorer`}
                           >
                             <div className="flex items-start justify-between mb-1">
                               <div className="flex-1 min-w-0">
-                                <p className="text-xs font-bold text-slate-700 truncate">
+                                <p className="text-xs font-bold text-gray-300 truncate">
                                   {balance.chainName}
                                 </p>
-                                <p className="text-xs text-slate-500">
+                                <p className="text-xs text-gray-500">
                                   {balance.symbol}
                                 </p>
                               </div>
                               <svg
-                                className="w-3 h-3 text-slate-400 group-hover:text-slate-600 flex-shrink-0 ml-1"
+                                className="w-3 h-3 text-gray-500 group-hover:text-gray-400 flex-shrink-0 ml-1"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -532,7 +544,7 @@ export default function AppPage() {
                               </svg>
                             </div>
                             <p
-                              className="text-base font-black text-slate-900 truncate"
+                              className="text-base font-black text-gray-100 truncate"
                               title={balance.balance}
                             >
                               {parseFloat(balance.balance).toFixed(4)}
@@ -549,7 +561,7 @@ export default function AppPage() {
 
                   {/* Testnets */}
                   <div>
-                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 px-1">
+                    <h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2 px-1">
                       Testnets
                     </h3>
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
@@ -559,20 +571,20 @@ export default function AppPage() {
                           <button
                             key={balance.chainKey}
                             onClick={() => openExplorer(balance.chainKey)}
-                            className="relative p-3 bg-gradient-to-br from-blue-50 to-blue-100 hover:from-blue-100 hover:to-blue-200 rounded-lg border border-blue-200 hover:border-blue-300 transition text-left group"
+                            className="relative p-3 bg-gradient-to-br from-blue-900/30 to-blue-800/30 hover:from-blue-800/40 hover:to-blue-700/40 rounded-lg border border-blue-800/50 hover:border-blue-700/50 transition text-left group"
                             title={`View ${balance.chainName} on explorer`}
                           >
                             <div className="flex items-start justify-between mb-1">
                               <div className="flex-1 min-w-0">
-                                <p className="text-xs font-bold text-blue-700 truncate">
+                                <p className="text-xs font-bold text-blue-300 truncate">
                                   {balance.chainName}
                                 </p>
-                                <p className="text-xs text-blue-600">
+                                <p className="text-xs text-blue-400">
                                   {balance.symbol}
                                 </p>
                               </div>
                               <svg
-                                className="w-3 h-3 text-blue-400 group-hover:text-blue-600 flex-shrink-0 ml-1"
+                                className="w-3 h-3 text-blue-500 group-hover:text-blue-400 flex-shrink-0 ml-1"
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -586,7 +598,7 @@ export default function AppPage() {
                               </svg>
                             </div>
                             <p
-                              className="text-base font-black text-blue-900 truncate"
+                              className="text-base font-black text-blue-100 truncate"
                               title={balance.balance}
                             >
                               {parseFloat(balance.balance).toFixed(4)}
@@ -602,10 +614,10 @@ export default function AppPage() {
                   </div>
 
                   {/* Faucet Info */}
-                  <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                  <div className="mt-4 p-3 bg-blue-900/20 border border-blue-800/50 rounded-lg">
                     <div className="flex items-start gap-2">
                       <svg
-                        className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0"
+                        className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -616,15 +628,15 @@ export default function AppPage() {
                         />
                       </svg>
                       <div className="flex-1">
-                        <p className="text-xs text-blue-900 font-semibold mb-1">
+                        <p className="text-xs text-blue-200 font-semibold mb-1">
                           Need testnet tokens?
                         </p>
-                        <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-blue-800">
+                        <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-blue-300">
                           <a
                             href="https://www.alchemy.com/faucets/base-sepolia"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="underline hover:text-blue-600 font-medium"
+                            className="underline hover:text-blue-200 font-medium"
                           >
                             Base Sepolia
                           </a>
@@ -654,10 +666,10 @@ export default function AppPage() {
           </div>
 
           {/* Workflows Section */}
-          <div className="bg-white rounded-lg shadow-md mb-8">
-            <div className="p-6 border-b border-gray-200">
+          <div className="bg-gray-900/80 backdrop-blur-sm rounded-lg shadow-md mb-8 border border-gray-800">
+            <div className="p-6 border-b border-gray-800">
               <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-black text-gray-900">
+                <h2 className="text-2xl font-black text-gray-100">
                   Your Workflows
                 </h2>
                 <div className="flex gap-2">
@@ -665,8 +677,8 @@ export default function AppPage() {
                     onClick={() => setActiveTab("all")}
                     className={`px-4 py-2 rounded-lg font-medium text-sm ${
                       activeTab === "all"
-                        ? "bg-orange-100 text-orange-700"
-                        : "text-gray-600 hover:bg-gray-100"
+                        ? "bg-gray-700 text-gray-100"
+                        : "text-gray-400 hover:bg-gray-800"
                     }`}
                   >
                     All ({workflows.length})
@@ -675,8 +687,8 @@ export default function AppPage() {
                     onClick={() => setActiveTab("active")}
                     className={`px-4 py-2 rounded-lg font-medium text-sm ${
                       activeTab === "active"
-                        ? "bg-green-100 text-green-700"
-                        : "text-gray-600 hover:bg-gray-100"
+                        ? "bg-green-900/50 text-green-300"
+                        : "text-gray-400 hover:bg-gray-800"
                     }`}
                   >
                     Active ({workflows.filter((w) => w.isActive).length})
@@ -685,8 +697,8 @@ export default function AppPage() {
                     onClick={() => setActiveTab("inactive")}
                     className={`px-4 py-2 rounded-lg font-medium text-sm ${
                       activeTab === "inactive"
-                        ? "bg-gray-200 text-gray-700"
-                        : "text-gray-600 hover:bg-gray-100"
+                        ? "bg-gray-700 text-gray-300"
+                        : "text-gray-400 hover:bg-gray-800"
                     }`}
                   >
                     Inactive ({workflows.filter((w) => !w.isActive).length})
@@ -695,15 +707,15 @@ export default function AppPage() {
               </div>
             </div>
 
-            <div className="divide-y divide-gray-200">
+            <div className="divide-y divide-gray-800">
               {loading ? (
-                <div className="p-12 text-center text-gray-500">
+                <div className="p-12 text-center text-gray-400">
                   Loading workflows...
                 </div>
               ) : filteredWorkflows.length === 0 ? (
                 <div className="p-12 text-center">
                   <svg
-                    className="mx-auto h-12 w-12 text-gray-400 mb-4"
+                    className="mx-auto h-12 w-12 text-gray-600 mb-4"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -715,15 +727,15 @@ export default function AppPage() {
                       d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                     />
                   </svg>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">
+                  <h3 className="text-lg font-bold text-gray-100 mb-2">
                     No workflows yet
                   </h3>
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-gray-400 mb-4">
                     Get started by creating your first workflow
                   </p>
                   <button
                     onClick={() => navigate("/workflow/new")}
-                    className="px-6 py-2 bg-orange-500 text-white font-bold rounded-lg hover:bg-orange-600 transition"
+                    className="px-6 py-2 bg-gray-800 hover:bg-gray-700 text-gray-100 font-bold rounded-lg border border-gray-700 transition"
                   >
                     Create Workflow
                   </button>
@@ -732,30 +744,30 @@ export default function AppPage() {
                 filteredWorkflows.map((workflow) => (
                   <div
                     key={workflow._id}
-                    className="p-6 hover:bg-gray-50 transition"
+                    className="p-6 hover:bg-gray-800/50 transition"
                   >
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-lg font-bold text-gray-900">
+                          <h3 className="text-lg font-bold text-gray-100">
                             {workflow.name}
                           </h3>
                           <span
                             className={`px-3 py-1 rounded-full text-xs font-bold ${
                               workflow.isActive
-                                ? "bg-green-100 text-green-700"
-                                : "bg-gray-200 text-gray-700"
+                                ? "bg-green-900/50 text-green-300"
+                                : "bg-gray-700 text-gray-300"
                             }`}
                           >
                             {workflow.isActive ? "Active" : "Inactive"}
                           </span>
                         </div>
-                        <p className="text-gray-600 mb-3">
+                        <p className="text-gray-400 mb-3">
                           {workflow.description || "No description"}
                         </p>
                         <div className="flex gap-6 text-sm text-gray-500">
                           <span>
-                            <strong>{workflow.nodes.length}</strong> nodes
+                            <strong className="text-gray-300">{workflow.nodes.length}</strong> nodes
                           </span>
                           <span>
                             Created{" "}
@@ -777,21 +789,21 @@ export default function AppPage() {
                           }
                           className={`px-4 py-2 rounded-lg font-medium text-sm ${
                             workflow.isActive
-                              ? "bg-yellow-100 text-yellow-700 hover:bg-yellow-200"
-                              : "bg-green-100 text-green-700 hover:bg-green-200"
+                              ? "bg-yellow-900/50 text-yellow-300 hover:bg-yellow-900/70"
+                              : "bg-green-900/50 text-green-300 hover:bg-green-900/70"
                           }`}
                         >
                           {workflow.isActive ? "Pause" : "Activate"}
                         </button>
                         <button
                           onClick={() => navigate(`/workflow/${workflow._id}`)}
-                          className="px-4 py-2 bg-blue-100 text-blue-700 rounded-lg font-medium text-sm hover:bg-blue-200"
+                          className="px-4 py-2 bg-blue-900/50 text-blue-300 rounded-lg font-medium text-sm hover:bg-blue-900/70"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => deleteWorkflow(workflow._id)}
-                          className="px-4 py-2 bg-red-100 text-red-700 rounded-lg font-medium text-sm hover:bg-red-200"
+                          className="px-4 py-2 bg-red-900/50 text-red-300 rounded-lg font-medium text-sm hover:bg-red-900/70"
                         >
                           Delete
                         </button>
@@ -804,36 +816,36 @@ export default function AppPage() {
           </div>
 
           {/* Recent Executions */}
-          <div className="bg-white rounded-lg shadow-md">
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-2xl font-black text-gray-900">
+          <div className="bg-gray-900/80 backdrop-blur-sm rounded-lg shadow-md border border-gray-800">
+            <div className="p-6 border-b border-gray-800">
+              <h2 className="text-2xl font-black text-gray-100">
                 Recent Executions
               </h2>
             </div>
-            <div className="divide-y divide-gray-200">
+            <div className="divide-y divide-gray-800">
               {executions.length === 0 ? (
-                <div className="p-12 text-center text-gray-500">
+                <div className="p-12 text-center text-gray-400">
                   No executions yet
                 </div>
               ) : (
                 executions.slice(0, 10).map((execution) => (
                   <div
                     key={execution._id}
-                    className="p-6 hover:bg-gray-50 transition"
+                    className="p-6 hover:bg-gray-800/50 transition"
                   >
                     <div className="flex justify-between items-start">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <h3 className="text-lg font-bold text-gray-900">
+                          <h3 className="text-lg font-bold text-gray-100">
                             {execution.workflow?.name || "Unknown Workflow"}
                           </h3>
                           <span
                             className={`px-3 py-1 rounded-full text-xs font-bold ${
                               execution.status === "success"
-                                ? "bg-green-100 text-green-700"
+                                ? "bg-green-900/50 text-green-300"
                                 : execution.status === "failed"
-                                ? "bg-red-100 text-red-700"
-                                : "bg-yellow-100 text-yellow-700"
+                                ? "bg-red-900/50 text-red-300"
+                                : "bg-yellow-900/50 text-yellow-300"
                             }`}
                           >
                             {execution.status}
@@ -853,11 +865,11 @@ export default function AppPage() {
                         </div>
                         {execution.errorMessages &&
                           execution.errorMessages.length > 0 && (
-                            <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
-                              <p className="text-sm text-red-800 font-medium mb-1">
+                            <div className="mt-3 p-3 bg-red-900/20 border border-red-800 rounded-lg">
+                              <p className="text-sm text-red-300 font-medium mb-1">
                                 Errors:
                               </p>
-                              <ul className="text-sm text-red-700 list-disc list-inside">
+                              <ul className="text-sm text-red-400 list-disc list-inside">
                                 {execution.errorMessages.map((err, idx) => (
                                   <li key={idx}>{err}</li>
                                 ))}
@@ -872,7 +884,8 @@ export default function AppPage() {
             </div>
           </div>
         </div>
-      </div>
+        </div> {/* Close relative z-10 wrapper */}
+      </div> {/* Close main container */}
     </ProtectedRoute>
   );
 }

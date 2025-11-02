@@ -4,7 +4,6 @@ import { useAuth } from "../contexts/AuthContext";
 import { Spotlight } from "../components/ui/spotlight";
 import { Terminal, TypingAnimation, AnimatedSpan } from "../components/ui/terminal";
 import { CustomCursor } from "../components/ui/custom-cursor";
-import { ParticleBackground } from "../components/ui/particle-background";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
