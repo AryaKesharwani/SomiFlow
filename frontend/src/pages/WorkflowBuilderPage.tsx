@@ -1860,15 +1860,15 @@ export default function WorkflowBuilderPage() {
   };
 
   return (
-    <div className="h-screen bg-gradient-to-br from-amber-50 via-orange-50/40 to-slate-100 flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#0a0a0a] flex flex-col overflow-hidden">
       {/* Header */}
-      <nav className="bg-white border-b border-gray-200 shadow-sm z-10 flex-shrink-0">
+      <nav className="bg-[#1a1a1a] border-b border-gray-800 shadow-sm z-10 flex-shrink-0">
         <div className="max-w-full px-6">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-4">
               <button
                 onClick={() => navigate("/app")}
-                className="text-gray-600 hover:text-gray-900 transition"
+                className="text-gray-400 hover:text-gray-200 transition"
                 title="Back to Dashboard"
               >
                 <svg
@@ -1890,36 +1890,36 @@ export default function WorkflowBuilderPage() {
                   type="text"
                   value={workflowName}
                   onChange={(e) => setWorkflowName(e.target.value)}
-                  className="text-2xl font-black text-gray-900 bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-orange-500 rounded px-2"
+                  className="text-2xl font-black text-gray-100 bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-gray-700 rounded px-2"
                   placeholder="Workflow Name"
                 />
                 <input
                   type="text"
                   value={workflowDescription}
                   onChange={(e) => setWorkflowDescription(e.target.value)}
-                  className="block text-sm text-gray-600 bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-orange-500 rounded px-2 mt-1"
+                  className="block text-sm text-gray-400 bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-gray-700 rounded px-2 mt-1"
                   placeholder="Add description..."
                 />
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-gray-400">
                 <span className="font-semibold">{nodes.length}</span> nodes •{" "}
                 <span className="font-semibold">{edges.length}</span>{" "}
                 connections
               </div>
               <button
                 onClick={() => setShowAIBuilder(true)}
-                className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold rounded-lg hover:from-blue-500 hover:to-blue-400 transition shadow-md hover:shadow-lg"
+                className="px-4 py-2 bg-gradient-to-r from-blue-900 to-blue-800 text-blue-200 font-semibold rounded-lg hover:from-blue-800 hover:to-blue-700 transition shadow-md hover:shadow-lg border border-blue-800"
               >
                 Build with AI
               </button>
               <button
                 onClick={() => setShowNodePalette(!showNodePalette)}
-                className={`px-4 py-2 font-semibold rounded-lg transition ${
+                className={`px-4 py-2 font-semibold rounded-lg transition border ${
                   showNodePalette
-                    ? "bg-orange-100 text-orange-700"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    ? "bg-gray-700 text-gray-200 border-gray-600"
+                    : "bg-gray-800 text-gray-300 hover:bg-gray-700 border-gray-700"
                 }`}
               >
                 {showNodePalette ? "Hide" : "Show"} Node Palette
@@ -1927,7 +1927,7 @@ export default function WorkflowBuilderPage() {
               <button
                 onClick={saveWorkflow}
                 disabled={saving}
-                className="px-6 py-2 bg-gradient-to-r from-orange-500 to-amber-600 text-white font-bold rounded-lg hover:shadow-lg transition disabled:opacity-50"
+                className="px-6 py-2 bg-gray-800 hover:bg-gray-700 text-gray-100 font-bold rounded-lg transition disabled:opacity-50 border border-gray-700"
               >
                 {saving ? "Saving..." : "Save Workflow"}
               </button>
@@ -1940,13 +1940,13 @@ export default function WorkflowBuilderPage() {
       <div className="flex-1 flex overflow-hidden">
         {/* Node Palette Sidebar */}
         {showNodePalette && (
-          <div className="w-80 bg-white border-r border-gray-200 overflow-y-auto shadow-lg">
+          <div className="w-80 bg-[#1a1a1a] border-r border-gray-800 overflow-y-auto shadow-lg">
             <div className="p-6">
               <div className="mb-6">
-                <h2 className="text-xl font-black text-gray-900 mb-2">
+                <h2 className="text-xl font-black text-gray-100 mb-2">
                   Add Nodes
                 </h2>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm text-gray-400">
                   Drag or click to add nodes to your workflow
                 </p>
               </div>
