@@ -2088,22 +2088,13 @@ export default function WorkflowBuilderPage() {
             }}
           >
             <Background
-              variant={BackgroundVariant.Dots}
-              gap={16}
+              variant={BackgroundVariant.Lines}
+              gap={20}
               size={1}
               color="#374151"
             />
             <Controls className="bg-gray-900 border border-gray-700 rounded-lg shadow-xl [&_button]:text-gray-300 [&_button:hover]:text-white [&_button]:bg-gray-800 [&_button:hover]:bg-gray-700" />
-            <MiniMap
-              className="bg-gray-900 border border-gray-700 rounded-lg shadow-xl"
-              nodeColor={(node) => {
-                const nodeType = NODE_TYPES.find(
-                  (n) => n.type === node.data.type
-                );
-                return nodeType ? "#f97316" : "#6b7280";
-              }}
-              maskColor="rgba(0, 0, 0, 0.6)"
-            />
+            
 
             {/* Empty State Panel */}
             {nodes.length === 0 && (
