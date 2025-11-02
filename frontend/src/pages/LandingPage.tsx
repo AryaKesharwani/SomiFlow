@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { redirectToVincentConnect } from "../lib/vincentAuth";
 import { useAuth } from "../contexts/AuthContext";
 import { Spotlight } from "../components/ui/spotlight";
+import { Terminal, TypingAnimation, AnimatedSpan } from "../components/ui/terminal";
 
 export default function LandingPage() {
   const { isAuthenticated } = useAuth();
@@ -15,7 +16,7 @@ export default function LandingPage() {
       <div className="container mx-auto px-6 py-16 relative z-10">
         {/* Spotlight Effect */}
         <Spotlight
-          className="-top-60 -left-20 md:-left-40 md:-top-40"
+          className="-top-100 left-0 md:left-95 md:-top-35"
           fill="white"
         />
         <nav className="flex justify-between items-center mb-20 relative z-20">
@@ -42,23 +43,22 @@ export default function LandingPage() {
                 />
               </svg>
             </div>
-            <span
-              className="text-2xl font-black tracking-tight text-gray-100"
-              style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
-            >
+            <span className="text-2xl font-black tracking-tight text-gray-100">
               SoniFlow
             </span>
           </div>
           <div className="flex gap-8 items-center">
             <a
               href="#features"
-              className="text-gray-400 hover:text-gray-200 transition font-medium"
+              className="text-gray-400 hover:text-gray-200 transition"
+              style={{ fontWeight: 500, fontStyle: 'normal' }}
             >
               Features
             </a>
             <a
               href="#how-it-works"
-              className="text-gray-400 hover:text-gray-200 transition font-medium"
+              className="text-gray-400 hover:text-gray-200 transition"
+              style={{ fontWeight: 500, fontStyle: 'normal' }}
             >
               How It Works
             </a>
@@ -87,21 +87,19 @@ export default function LandingPage() {
                 d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
               />
             </svg>
-            <span className="text-sm font-bold text-gray-300 uppercase tracking-wider">
+            <span className="text-sm text-gray-300 uppercase tracking-wider" style={{ fontWeight: 500, fontStyle: 'normal' }}>
               Autonomous DeFi Automation
             </span>
           </div>
-          <h1
-            className="text-7xl font-black mb-6 text-gray-100 leading-[1.1] tracking-tight"
-            style={{ fontFamily: "system-ui, -apple-system, sans-serif" }}
-          >
-            Automate DeFi
-            <br />
-            <span className="bg-gradient-to-r from-gray-400 via-gray-300 to-gray-400 bg-clip-text text-transparent">
+          <h1 className="text-7xl mb-6 leading-[1.1] tracking-tight">
+            <span className="block text-gray-100" style={{ fontWeight: 800, fontStyle: 'normal' }}>
+              Automate DeFi
+            </span>
+            <span className="block bg-gradient-to-r from-gray-400 via-gray-300 to-gray-400 bg-clip-text text-transparent" style={{ fontWeight: 700, fontStyle: 'italic' }}>
               Like Clockwork
             </span>
           </h1>
-          <p className="text-xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed font-medium">
+          <p className="text-xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed" style={{ fontWeight: 400, fontStyle: 'normal' }}>
             Build automated strategies with precision-engineered nodes. Connect,
             simulate, execute. Powered by Lit Protocol, optimized by AI, built
             for reliability.
@@ -110,7 +108,15 @@ export default function LandingPage() {
             {isAuthenticated ? (
               <Link
                 to="/app"
-                className="px-8 py-4 bg-gray-800 hover:bg-gray-700 text-gray-100 rounded-lg font-bold text-lg transition shadow-lg border border-gray-700 inline-flex items-center gap-2"
+                className="text-white transition shadow-lg inline-flex items-center gap-2"
+                style={{
+                  backgroundColor: '#1D2B3F',
+                  borderRadius: '8px',
+                  padding: '12px 24px',
+                  fontSize: '1.125rem',
+                  fontWeight: 500,
+                  fontStyle: 'normal'
+                }}
               >
                 <span>Open Dashboard</span>
                 <svg
@@ -130,7 +136,15 @@ export default function LandingPage() {
             ) : (
               <button
                 onClick={redirectToVincentConnect}
-                className="px-8 py-4 bg-gray-800 hover:bg-gray-700 text-gray-100 rounded-lg font-bold text-lg transition shadow-lg border border-gray-700 inline-flex items-center gap-2"
+                className="text-white transition shadow-lg inline-flex items-center gap-2"
+                style={{
+                  backgroundColor: '#1D2B3F',
+                  borderRadius: '8px',
+                  padding: '12px 24px',
+                  fontSize: '1.125rem',
+                  fontWeight: 500,
+                  fontStyle: 'normal'
+                }}
               >
                 <span>Connect with Vincent</span>
                 <svg
@@ -150,7 +164,17 @@ export default function LandingPage() {
             )}
             <a
               href="#how-it-works"
-              className="px-8 py-4 bg-[#1a1a1a] hover:bg-[#222] text-gray-200 rounded-lg font-bold text-lg transition border-2 border-gray-700 shadow-sm inline-flex items-center gap-2"
+              className="transition inline-flex items-center gap-2"
+              style={{
+                backgroundColor: 'transparent',
+                color: '#D0D0D0',
+                border: '1px solid #3A475C',
+                borderRadius: '8px',
+                padding: '12px 24px',
+                fontSize: '1.125rem',
+                fontWeight: 500,
+                fontStyle: 'normal'
+              }}
             >
               <span>How It Works</span>
               <svg
@@ -175,80 +199,80 @@ export default function LandingPage() {
           id="features"
           className="grid md:grid-cols-3 gap-6 mt-32 max-w-6xl mx-auto"
         >
-          <div className="p-8 bg-[#1a1a1a] border-2 border-gray-800 rounded-xl hover:border-gray-600 hover:shadow-xl transition group">
-            <div className="w-14 h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center mb-4 border border-gray-700 group-hover:scale-110 transition">
-              <svg
-                className="w-7 h-7 text-gray-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2.5}
-                  d="M4 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v7a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1H5a1 1 0 01-1-1v-3zM14 16a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1v-3z"
-                />
-              </svg>
-            </div>
-            <h3 className="text-xl font-black text-gray-100 mb-3 tracking-tight">
-              Modular Nodes
-            </h3>
-            <p className="text-gray-400 leading-relaxed font-medium">
-              Snap together precision-built modules. Swap, lend, transfer—each
-              node engineered for reliability.
-            </p>
-          </div>
+          <Terminal className="w-full max-w-full h-auto max-h-none">
+            <TypingAnimation className="text-blue-400">&gt; node --inspect modular-system</TypingAnimation>
+            <AnimatedSpan className="text-green-500">
+              Debugger listening on ws://127.0.0.1
+            </AnimatedSpan>
+            <AnimatedSpan className="text-green-500">
+              Module system initialized
+            </AnimatedSpan>
+            <AnimatedSpan className="text-green-500">
+              Loaded: Swap Module v2.1.0
+            </AnimatedSpan>
+            <AnimatedSpan className="text-green-500">
+              Loaded: Lending Module v1.8.2
+            </AnimatedSpan>
+            <AnimatedSpan className="text-green-500">
+              Loaded: Transfer Module v3.0.1
+            </AnimatedSpan>
+            <AnimatedSpan className="text-cyan-400">
+              <span>Status: All modules operational</span>
+            </AnimatedSpan>
+            <TypingAnimation className="text-gray-400">
+              Precision-built modules ready for deployment.
+            </TypingAnimation>
+          </Terminal>
 
-          <div className="p-8 bg-[#1a1a1a] border-2 border-gray-800 rounded-xl hover:border-gray-600 hover:shadow-xl transition group">
-            <div className="w-14 h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center mb-4 border border-gray-700 group-hover:scale-110 transition">
-              <svg
-                className="w-7 h-7 text-gray-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2.5}
-                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                />
-              </svg>
-            </div>
-            <h3 className="text-xl font-black text-gray-100 mb-3 tracking-tight">
-              Trustless Engine
-            </h3>
-            <p className="text-gray-400 leading-relaxed font-medium">
-              PKP-powered execution. Zero custody, total control. Your keys,
-              your automation.
-            </p>
-          </div>
+          <Terminal className="w-full max-w-full h-auto max-h-none">
+            <TypingAnimation className="text-blue-400">&gt; security-audit --engine pkp</TypingAnimation>
+            <AnimatedSpan className="text-green-500">
+              Scanning execution environment...
+            </AnimatedSpan>
+            <AnimatedSpan className="text-green-500">
+              PKP signature verification: PASSED
+            </AnimatedSpan>
+            <AnimatedSpan className="text-green-500">
+              Custody check: ZERO custody detected
+            </AnimatedSpan>
+            <AnimatedSpan className="text-green-500">
+              Private key control: USER OWNED
+            </AnimatedSpan>
+            <AnimatedSpan className="text-green-500">
+              Trustless execution: VERIFIED
+            </AnimatedSpan>
+            <AnimatedSpan className="text-cyan-400">
+              <span>Security Score: 10/10</span>
+            </AnimatedSpan>
+            <TypingAnimation className="text-gray-400">
+              Your keys. Your automation. Total control.
+            </TypingAnimation>
+          </Terminal>
 
-          <div className="p-8 bg-[#1a1a1a] border-2 border-gray-800 rounded-xl hover:border-gray-600 hover:shadow-xl transition group">
-            <div className="w-14 h-14 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl flex items-center justify-center mb-4 border border-gray-700 group-hover:scale-110 transition">
-              <svg
-                className="w-7 h-7 text-gray-300"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2.5}
-                  d="M13 10V3L4 14h7v7l9-11h-7z"
-                />
-              </svg>
-            </div>
-            <h3 className="text-xl font-black text-gray-100 mb-3 tracking-tight">
-              AI Optimization
-            </h3>
-            <p className="text-gray-400 leading-relaxed font-medium">
-              Real-time market intelligence. Automated crash detection.
-              Strategies that adapt.
-            </p>
-          </div>
+          <Terminal className="w-full max-w-full h-auto max-h-none">
+            <TypingAnimation className="text-blue-400">&gt; ai-optimizer --market-watch</TypingAnimation>
+            <AnimatedSpan className="text-green-500">
+              Initializing market intelligence...
+            </AnimatedSpan>
+            <AnimatedSpan className="text-green-500">
+              Real-time data streams: ACTIVE
+            </AnimatedSpan>
+            <AnimatedSpan className="text-green-500">
+              Crash detection algorithms: ONLINE
+            </AnimatedSpan>
+            <AnimatedSpan className="text-green-500">
+              Strategy adaptation engine: READY
+            </AnimatedSpan>
+            <AnimatedSpan className="text-yellow-500">
+              <span>Monitoring 2,847 market signals</span>
+            </AnimatedSpan>
+            <AnimatedSpan className="text-cyan-400">
+              <span>AI Status: Optimizing strategies</span>
+            </AnimatedSpan>
+            <TypingAnimation className="text-gray-400">
+              Strategies that learn and adapt in real-time.
+            </TypingAnimation>
+          </Terminal>
         </div>
 
         {/* How It Works */}
@@ -264,57 +288,93 @@ export default function LandingPage() {
             </h2>
           </div>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="relative p-8 bg-[#1a1a1a] border-2 border-gray-800 rounded-xl hover:border-gray-600 transition group">
-              <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-gray-700 to-gray-800 rounded-xl flex items-center justify-center text-gray-200 font-black text-xl shadow-lg border-2 border-gray-900">
-                1
-              </div>
-              <h3 className="text-2xl font-black text-gray-100 mb-3 mt-2 tracking-tight">
-                Build
-              </h3>
-              <p className="text-gray-400 leading-relaxed font-medium">
-                Drag, drop, connect. Assemble your automation workflow with
-                precision-tooled nodes. Visual, intuitive, powerful.
-              </p>
-            </div>
+            <Terminal className="w-full max-w-full h-auto max-h-none">
+              <TypingAnimation className="text-blue-400">&gt; workflow-builder init</TypingAnimation>
+              <AnimatedSpan className="text-green-500">
+                Canvas initialized
+              </AnimatedSpan>
+              <AnimatedSpan className="text-green-500">
+                Node library loaded: 24 modules available
+              </AnimatedSpan>
+              <AnimatedSpan className="text-green-500">
+                Drag-and-drop interface: READY
+              </AnimatedSpan>
+              <AnimatedSpan className="text-green-500">
+                Connection validation: ACTIVE
+              </AnimatedSpan>
+              <AnimatedSpan className="text-cyan-400">
+                <span>Status: Awaiting workflow assembly</span>
+              </AnimatedSpan>
+              <TypingAnimation className="text-gray-400">
+                Visual, intuitive, powerful workflow creation.
+              </TypingAnimation>
+            </Terminal>
 
-            <div className="relative p-8 bg-[#1a1a1a] border-2 border-gray-800 rounded-xl hover:border-gray-600 transition group">
-              <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-gray-700 to-gray-800 rounded-xl flex items-center justify-center text-gray-200 font-black text-xl shadow-lg border-2 border-gray-900">
-                2
-              </div>
-              <h3 className="text-2xl font-black text-gray-100 mb-3 mt-2 tracking-tight">
-                Simulate
-              </h3>
-              <p className="text-gray-400 leading-relaxed font-medium">
-                Test-drive before deployment. Dry-run simulation checks every
-                detail—gas, approvals, outcomes.
-              </p>
-            </div>
+            <Terminal className="w-full max-w-full h-auto max-h-none">
+              <TypingAnimation className="text-blue-400">&gt; simulate --dry-run workflow.json</TypingAnimation>
+              <AnimatedSpan className="text-green-500">
+                Loading workflow configuration...
+              </AnimatedSpan>
+              <AnimatedSpan className="text-green-500">
+                Checking gas estimates: CALCULATED
+              </AnimatedSpan>
+              <AnimatedSpan className="text-green-500">
+                Verifying token approvals: CONFIRMED
+              </AnimatedSpan>
+              <AnimatedSpan className="text-green-500">
+                Simulating execution paths: SUCCESS
+              </AnimatedSpan>
+              <AnimatedSpan className="text-cyan-400">
+                <span>Estimated gas: 0.0023 ETH</span>
+              </AnimatedSpan>
+              <TypingAnimation className="text-gray-400">
+                Test-drive complete. Ready for deployment.
+              </TypingAnimation>
+            </Terminal>
 
-            <div className="relative p-8 bg-[#1a1a1a] border-2 border-gray-800 rounded-xl hover:border-gray-600 transition group">
-              <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-gray-700 to-gray-800 rounded-xl flex items-center justify-center text-gray-200 font-black text-xl shadow-lg border-2 border-gray-900">
-                3
-              </div>
-              <h3 className="text-2xl font-black text-gray-100 mb-3 mt-2 tracking-tight">
-                Execute
-              </h3>
-              <p className="text-gray-400 leading-relaxed font-medium">
-                PKP-powered trustless execution. Sign once, automate forever.
-                Every transaction logged, auditable, yours.
-              </p>
-            </div>
+            <Terminal className="w-full max-w-full h-auto max-h-none">
+              <TypingAnimation className="text-blue-400">&gt; execute --pkp-sign workflow.json</TypingAnimation>
+              <AnimatedSpan className="text-green-500">
+                PKP signature requested...
+              </AnimatedSpan>
+              <AnimatedSpan className="text-green-500">
+                Transaction signed: 0x7f8a9b...
+              </AnimatedSpan>
+              <AnimatedSpan className="text-green-500">
+                Broadcast to network: CONFIRMED
+              </AnimatedSpan>
+              <AnimatedSpan className="text-green-500">
+                Block confirmation: #18,942,573
+              </AnimatedSpan>
+              <AnimatedSpan className="text-cyan-400">
+                <span>Status: Execution successful</span>
+              </AnimatedSpan>
+              <TypingAnimation className="text-gray-400">
+                Transaction logged and auditable.
+              </TypingAnimation>
+            </Terminal>
 
-            <div className="relative p-8 bg-[#1a1a1a] border-2 border-gray-800 rounded-xl hover:border-gray-600 transition group">
-              <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-gray-700 to-gray-800 rounded-xl flex items-center justify-center text-gray-200 font-black text-xl shadow-lg border-2 border-gray-900">
-                4
-              </div>
-              <h3 className="text-2xl font-black text-gray-100 mb-3 mt-2 tracking-tight">
-                Monitor
-              </h3>
-              <p className="text-gray-400 leading-relaxed font-medium">
-                AI agents watch the markets 24/7. Crash protection, re-entry
-                signals, adaptive strategies on autopilot.
-              </p>
-            </div>
+            <Terminal className="w-full max-w-full h-auto max-h-none">
+              <TypingAnimation className="text-blue-400">&gt; ai-agent --monitor markets</TypingAnimation>
+              <AnimatedSpan className="text-green-500">
+                Deploying market surveillance agents...
+              </AnimatedSpan>
+              <AnimatedSpan className="text-green-500">
+                Crash detection: ARMED
+              </AnimatedSpan>
+              <AnimatedSpan className="text-green-500">
+                Re-entry signals: TRACKING
+              </AnimatedSpan>
+              <AnimatedSpan className="text-yellow-500">
+                <span>Alert: Volatility spike detected at 09:47 UTC</span>
+              </AnimatedSpan>
+              <AnimatedSpan className="text-cyan-400">
+                <span>Strategy adapted: Position protected</span>
+              </AnimatedSpan>
+              <TypingAnimation className="text-gray-400">
+                24/7 adaptive monitoring on autopilot.
+              </TypingAnimation>
+            </Terminal>
           </div>
         </div>
 

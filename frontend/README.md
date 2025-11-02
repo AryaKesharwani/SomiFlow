@@ -1,73 +1,95 @@
-# React + TypeScript + Vite
+# SomiFlow Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Modern web interface for SomiFlow - an autonomous DeFi automation platform built on Lit Protocol.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+SomiFlow enables users to build, simulate, and execute automated DeFi strategies using a visual workflow builder. The frontend provides an intuitive interface for creating complex DeFi automations with trustless PKP-powered execution.
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **React 18** - UI library
+- **TypeScript** - Type safety
+- **Vite** - Build tool and dev server
+- **Tailwind CSS v4** - Utility-first styling
+- **React Router** - Client-side routing
+- **Motion** - Animations (terminal components)
+- **shadcn/ui** - Component library
+- **Vincent SDK** - Authentication via Lit Protocol
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- 🔐 **Vincent Authentication** - Secure wallet-based auth via Lit Protocol
+- 🎨 **Professional Terminal UI** - Command-line styled components throughout
+- 🔄 **Visual Workflow Builder** - Drag-and-drop DeFi automation builder
+- 📊 **Real-time Dashboard** - Track workflows, executions, and success rates
+- 🤖 **AI-Powered Creation** - Natural language workflow generation
+- 🔒 **PKP Integration** - Trustless, non-custodial execution
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Prerequisites
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Node.js 20+ (recommended)
+- npm or pnpm
+
+### Installation
+
+```bash
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env
+# Add your API keys and configuration
+
+# Start development server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Build for Production
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run build
+npm run preview  # Preview production build
 ```
+
+## Project Structure
+
+```
+src/
+├── components/       # Reusable UI components
+│   ├── ui/          # shadcn/ui and custom components
+│   └── ...
+├── pages/           # Route pages
+├── contexts/        # React contexts (Auth, etc.)
+├── lib/            # Utilities and API clients
+├── config/         # Configuration files
+└── assets/         # Static assets
+```
+
+## Environment Variables
+
+Create a `.env` file based on `.env.example`:
+
+```env
+VITE_API_URL=http://localhost:5000
+VITE_VINCENT_CLIENT_ID=your_client_id
+VITE_VINCENT_REDIRECT_URI=http://localhost:5173/auth/callback
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+## Contributing
+
+This project is part of ETHOnline submission. Contributions welcome!
+
+## License
+
+MIT
+

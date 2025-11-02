@@ -140,7 +140,7 @@ export const WorkflowCreationModal: React.FC<WorkflowCreationModalProps> = ({
         {/* Footer */}
         <div className="px-8 py-4 bg-gray-900 border-t-2 border-gray-800">
           <p className="text-sm text-gray-400 text-center font-medium">
-            💡 You can always switch between AI and manual editing at any time
+            You can always switch between AI and manual editing at any time
           </p>
         </div>
       </div>
