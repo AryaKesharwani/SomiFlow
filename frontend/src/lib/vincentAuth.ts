@@ -16,7 +16,6 @@ export const handleAuthCallback = async () => {
     // Check sessionStorage first (in case URL was already cleaned by React StrictMode)
     const storedJwt = sessionStorage.getItem("pending_vincent_jwt");
     if (storedJwt) {
-      console.log("✅ Using stored JWT from sessionStorage");
       sessionStorage.removeItem("pending_vincent_jwt");
 
       // Still try to decode it with the SDK if possible
@@ -38,8 +37,6 @@ export const handleAuthCallback = async () => {
       throw new Error("No JWT found in URL");
     }
 
-    console.log("✅ Vincent JWT found in URL");
-
     // Store JWT in sessionStorage before SDK processes it (for React StrictMode)
     const urlParams = new URLSearchParams(window.location.search);
     const jwtParam = urlParams.get("vincent_jwt") || urlParams.get("jwt");
@@ -55,10 +52,6 @@ export const handleAuthCallback = async () => {
     if (!result) {
       throw new Error("Failed to decode JWT");
     }
-
-    console.log("✅ JWT decoded and verified by Vincent SDK");
-    console.log("   Subject:", result.decodedJWT.payload.sub);
-    console.log("   Audience:", result.decodedJWT.payload.aud);
 
     // Remove JWT from URL for security
     vincentAuthClient.removeVincentJWTFromURI();

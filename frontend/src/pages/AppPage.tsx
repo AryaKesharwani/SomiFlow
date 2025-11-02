@@ -5,7 +5,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import { apiClient } from "../lib/apiClient";
 import { showToast } from "../lib/toast";
 import { useTransactionPopup } from "@blockscout/app-sdk";
-// import { useAccount } from 'wagmi';
+import { Terminal, TypingAnimation, AnimatedSpan } from "../components/ui/terminal";
 
 interface Workflow {
   _id: string;
@@ -219,8 +219,6 @@ export default function AppPage() {
     const workflow = workflows.find((w) => w._id === workflowId);
     if (!workflow) return;
 
-    // For now, we'll proceed with deletion
-    // TODO: Implement a custom modal confirmation
     try {
       await apiClient.deleteWorkflow(workflowId);
       setWorkflows(workflows.filter((w) => w._id !== workflowId));
@@ -298,119 +296,67 @@ export default function AppPage() {
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {/* Total Workflows Card */}
-            <div className="relative overflow-hidden bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white">
-              <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
-                    <svg
-                      className="w-4 h-4"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z" />
-                    </svg>
-                  </div>
-                  <span className="text-sm font-semibold text-blue-100">
-                    Total Workflows
-                  </span>
-                </div>
-                <p className="text-4xl font-bold mb-1">{workflows.length}</p>
-                <p className="text-xs text-blue-100">All time created</p>
-              </div>
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
-            </div>
+            <Terminal className="w-full max-w-full h-auto max-h-none">
+              <TypingAnimation className="text-blue-400">&gt; query --total-workflows</TypingAnimation>
+              <AnimatedSpan className="text-green-500">
+                Database query executed
+              </AnimatedSpan>
+              <AnimatedSpan className="text-cyan-400">
+                <span>Total Workflows: {workflows.length}</span>
+              </AnimatedSpan>
+              <TypingAnimation className="text-gray-400">
+                All time created
+              </TypingAnimation>
+            </Terminal>
 
             {/* Active Workflows Card */}
-            <div className="relative overflow-hidden bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl p-6 text-white">
-              <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
-                    <svg
-                      className="w-4 h-4"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <span className="text-sm font-semibold text-green-100">
-                    Active
-                  </span>
-                </div>
-                <p className="text-4xl font-bold mb-1">
-                  {workflows.filter((w) => w.isActive).length}
-                </p>
-                <p className="text-xs text-green-100">Currently running</p>
-              </div>
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
-            </div>
+            <Terminal className="w-full max-w-full h-auto max-h-none">
+              <TypingAnimation className="text-blue-400">&gt; status --active-workflows</TypingAnimation>
+              <AnimatedSpan className="text-green-500">
+                Scanning active processes...
+              </AnimatedSpan>
+              <AnimatedSpan className="text-cyan-400">
+                <span>Active: {workflows.filter((w) => w.isActive).length}</span>
+              </AnimatedSpan>
+              <TypingAnimation className="text-gray-400">
+                Currently running
+              </TypingAnimation>
+            </Terminal>
 
             {/* Total Executions Card */}
-            <div className="relative overflow-hidden bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white">
-              <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
-                    <svg
-                      className="w-4 h-4"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <span className="text-sm font-semibold text-purple-100">
-                    Executions
-                  </span>
-                </div>
-                <p className="text-4xl font-bold mb-1">{executions.length}</p>
-                <p className="text-xs text-purple-100">Total runs</p>
-              </div>
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
-            </div>
+            <Terminal className="w-full max-w-full h-auto max-h-none">
+              <TypingAnimation className="text-blue-400">&gt; analytics --execution-count</TypingAnimation>
+              <AnimatedSpan className="text-green-500">
+                Fetching execution history...
+              </AnimatedSpan>
+              <AnimatedSpan className="text-cyan-400">
+                <span>Executions: {executions.length}</span>
+              </AnimatedSpan>
+              <TypingAnimation className="text-gray-400">
+                Total runs
+              </TypingAnimation>
+            </Terminal>
 
             {/* Success Rate Card */}
-            <div className="relative overflow-hidden bg-gradient-to-br from-orange-500 to-amber-600 rounded-xl p-6 text-white">
-              <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
-                    <svg
-                      className="w-4 h-4"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
-                    </svg>
-                  </div>
-                  <span className="text-sm font-semibold text-orange-100">
-                    Success Rate
-                  </span>
-                </div>
-                <p className="text-4xl font-bold mb-1">
-                  {executions.length > 0
+            <Terminal className="w-full max-w-full h-auto max-h-none">
+              <TypingAnimation className="text-blue-400">&gt; metrics --success-rate</TypingAnimation>
+              <AnimatedSpan className="text-green-500">
+                Calculating performance metrics...
+              </AnimatedSpan>
+              <AnimatedSpan className="text-cyan-400">
+                <span>Success Rate: {executions.length > 0
                     ? Math.round(
                         (executions.filter((e) => e.status === "success")
                           .length /
                           executions.length) *
                           100
                       )
-                    : 0}
-                  %
-                </p>
-                <p className="text-xs text-orange-100">
-                  {executions.filter((e) => e.status === "success").length} of{" "}
-                  {executions.length} successful
-                </p>
-              </div>
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
-            </div>
+                    : 0}%</span>
+              </AnimatedSpan>
+              <TypingAnimation className="text-gray-400">
+                {`${executions.filter((e) => e.status === "success").length} of ${executions.length} successful`}
+              </TypingAnimation>
+            </Terminal>
           </div>
 
           {/* Account Information Card - Compact */}

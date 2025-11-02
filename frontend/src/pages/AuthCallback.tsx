@@ -17,16 +17,8 @@ export default function AuthCallback() {
 
     const processCallback = async () => {
       try {
-        console.log('🔍 Processing auth callback...');
-        console.log('📍 Current URL:', window.location.href);
-        console.log('🔑 URL params:', window.location.search);
-        
         const { jwt } = await handleAuthCallback();
-        console.log('✅ JWT extracted successfully');
-        
         await login(jwt);
-        console.log('✅ Login successful, redirecting to /app');
-        
         navigate('/app');
       } catch (error) {
         console.error('❌ Authentication failed:', error);
