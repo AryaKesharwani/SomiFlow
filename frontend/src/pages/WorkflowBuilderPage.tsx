@@ -36,37 +36,37 @@ const CustomNode = ({ data }: any) => {
 
   return (
     <div
-      className={`bg-white rounded-lg shadow-lg border-2 border-gray-300 hover:border-orange-400 transition-all min-w-[200px]`}
+      className={`bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl shadow-xl border border-gray-700 hover:border-orange-500/50 transition-all min-w-[200px] hover:shadow-orange-500/20 hover:shadow-2xl`}
     >
       {/* Standard input handle (all nodes except trigger and MCP) */}
       {!isTrigger && !isMCP && (
         <Handle
           type="target"
           position={Position.Top}
-          className="w-3 h-3 !bg-orange-500"
+          className="w-3 h-3 !bg-orange-500 !border-2 !border-gray-900"
           id="input"
         />
       )}
 
       <div
-        className={`bg-gradient-to-br ${nodeType.color} px-4 py-2 rounded-t-lg text-white`}
+        className={`bg-gradient-to-br ${nodeType.color} px-4 py-2 rounded-t-xl text-white shadow-lg`}
       >
-        <div className="font-semibold text-sm">{data.label}</div>
+        <div className="font-bold text-sm">{data.label}</div>
       </div>
 
-      <div className="px-4 py-3 bg-white rounded-b-lg">
-        <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">
+      <div className="px-4 py-3 bg-gradient-to-br from-gray-800 to-gray-900 rounded-b-xl">
+        <div className="text-xs text-gray-400 uppercase tracking-wide mb-1 font-semibold">
           {nodeType.label}
         </div>
-        <div className="text-xs text-gray-600">{nodeType.description}</div>
+        <div className="text-xs text-gray-300">{nodeType.description}</div>
         {data.config && Object.keys(data.config).length > 0 && (
-          <div className="text-xs text-gray-500 mt-2 pt-2 border-t border-gray-200">
+          <div className="text-xs text-gray-400 mt-2 pt-2 border-t border-gray-700">
             {Object.keys(data.config).length} configuration
             {Object.keys(data.config).length !== 1 ? "s" : ""}
           </div>
         )}
         {isMCP && (
-          <div className="text-xs font-semibold text-cyan-600 mt-2 pt-2 border-t border-cyan-200">
+          <div className="text-xs font-semibold text-cyan-400 mt-2 pt-2 border-t border-cyan-900/50">
             Connect to AI node MCP input
           </div>
         )}
@@ -1506,7 +1506,7 @@ const NodeConfigPanel = ({
       return <AIConfig config={config} onUpdate={onUpdate} />;
     default:
       return (
-        <div className="p-4 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-600 text-center">
+        <div className="p-4 bg-gray-800/50 border border-gray-700 rounded-lg text-sm text-gray-400 text-center backdrop-blur-sm">
           No configuration available for this node type
         </div>
       );
@@ -1940,10 +1940,10 @@ export default function WorkflowBuilderPage() {
       <div className="flex-1 flex overflow-hidden">
         {/* Node Palette Sidebar */}
         {showNodePalette && (
-          <div className="w-80 bg-[#1a1a1a] border-r border-gray-800 overflow-y-auto shadow-lg">
+          <div className="w-80 bg-gradient-to-b from-gray-900 to-black border-r border-gray-800 overflow-y-auto shadow-2xl">
             <div className="p-6">
               <div className="mb-6">
-                <h2 className="text-xl font-black text-gray-100 mb-2">
+                <h2 className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 mb-2">
                   Add Nodes
                 </h2>
                 <p className="text-sm text-gray-400">
@@ -1966,21 +1966,21 @@ export default function WorkflowBuilderPage() {
                         !isDisabled && onDragStart(e, nodeType.type)
                       }
                       onClick={() => !isDisabled && addNode(nodeType.type)}
-                      className={`group relative overflow-hidden bg-white border-2 rounded-xl transition-all duration-200 ${
+                      className={`group relative overflow-hidden bg-gradient-to-br from-gray-800 to-gray-900 border rounded-xl transition-all duration-200 ${
                         isDisabled
-                          ? "border-gray-200 opacity-50 cursor-not-allowed"
-                          : "border-gray-200 hover:border-orange-400 hover:shadow-xl cursor-move"
+                          ? "border-gray-700 opacity-50 cursor-not-allowed"
+                          : "border-gray-700 hover:border-orange-500 hover:shadow-xl hover:shadow-orange-500/20 cursor-move hover:scale-105"
                       }`}
                     >
                       {/* Gradient background accent */}
                       <div
-                        className={`absolute inset-0 bg-gradient-to-br ${nodeType.color} opacity-0 group-hover:opacity-5 transition-opacity duration-200`}
+                        className={`absolute inset-0 bg-gradient-to-br ${nodeType.color} opacity-0 group-hover:opacity-10 transition-opacity duration-200`}
                       />
 
                       {/* Disabled overlay */}
                       {isDisabled && (
-                        <div className="absolute inset-0 bg-gray-50/80 flex items-center justify-center z-10">
-                          <span className="text-xs font-semibold text-gray-600 bg-white px-2 py-1 rounded shadow-sm">
+                        <div className="absolute inset-0 bg-black/60 flex items-center justify-center z-10 backdrop-blur-sm">
+                          <span className="text-xs font-semibold text-gray-400 bg-gray-800 px-3 py-1 rounded-lg shadow-lg border border-gray-700">
                             Already Added
                           </span>
                         </div>
@@ -1998,16 +1998,16 @@ export default function WorkflowBuilderPage() {
 
                         {/* Content */}
                         <div className="flex-1 min-w-0">
-                          <h3 className="font-bold text-gray-900 mb-1 text-sm group-hover:text-orange-600 transition-colors">
+                          <h3 className="font-bold text-gray-100 mb-1 text-sm group-hover:text-orange-400 transition-colors">
                             {nodeType.label}
                           </h3>
-                          <p className="text-xs text-gray-600 leading-relaxed">
+                          <p className="text-xs text-gray-400 leading-relaxed">
                             {nodeType.description}
                           </p>
                         </div>
 
                         {/* Drag indicator */}
-                        <div className="flex-shrink-0 text-gray-300 group-hover:text-orange-400 transition-colors">
+                        <div className="flex-shrink-0 text-gray-600 group-hover:text-orange-400 transition-colors">
                           <svg
                             className="w-5 h-5"
                             fill="none"
@@ -2034,9 +2034,9 @@ export default function WorkflowBuilderPage() {
               </div>
 
               {nodes.length === 0 && (
-                <div className="mt-8 p-4 bg-gradient-to-br from-orange-50 to-amber-50 border-2 border-orange-200 rounded-xl shadow-sm">
+                <div className="mt-8 p-4 bg-gradient-to-br from-orange-900/30 to-amber-900/30 border border-orange-700/50 rounded-xl shadow-lg backdrop-blur-sm">
                   <div className="flex items-start gap-3">
-                    <div className="flex-shrink-0 w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
+                    <div className="flex-shrink-0 w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-600 rounded-lg flex items-center justify-center shadow-lg">
                       <svg
                         className="w-5 h-5 text-white"
                         fill="none"
@@ -2052,10 +2052,10 @@ export default function WorkflowBuilderPage() {
                       </svg>
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm text-orange-900 font-bold mb-1">
+                      <p className="text-sm text-orange-300 font-bold mb-1">
                         Get Started
                       </p>
-                      <p className="text-xs text-orange-800 leading-relaxed">
+                      <p className="text-xs text-orange-200/80 leading-relaxed">
                         Drag nodes onto the canvas or click to add them to your
                         workflow
                       </p>
@@ -2091,39 +2091,40 @@ export default function WorkflowBuilderPage() {
               variant={BackgroundVariant.Dots}
               gap={16}
               size={1}
-              color="#d1d5db"
+              color="#374151"
             />
-            <Controls className="bg-white border-2 border-gray-200 rounded-lg shadow-lg" />
+            <Controls className="bg-gray-900 border border-gray-700 rounded-lg shadow-xl [&_button]:text-gray-300 [&_button:hover]:text-white [&_button]:bg-gray-800 [&_button:hover]:bg-gray-700" />
             <MiniMap
-              className="bg-white border-2 border-gray-200 rounded-lg shadow-lg"
+              className="bg-gray-900 border border-gray-700 rounded-lg shadow-xl"
               nodeColor={(node) => {
                 const nodeType = NODE_TYPES.find(
                   (n) => n.type === node.data.type
                 );
-                return nodeType ? "#f97316" : "#94a3b8";
+                return nodeType ? "#f97316" : "#6b7280";
               }}
+              maskColor="rgba(0, 0, 0, 0.6)"
             />
 
             {/* Empty State Panel */}
             {nodes.length === 0 && (
               <Panel
                 position="top-center"
-                className="bg-white rounded-xl shadow-2xl p-8 border-2 border-gray-200 max-w-md"
+                className="bg-gradient-to-br from-gray-900 to-gray-950 rounded-xl shadow-2xl p-8 border border-gray-800 max-w-md backdrop-blur-xl"
               >
                 <div className="text-center">
-                  <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-amber-500 rounded-2xl mx-auto mb-6 flex items-center justify-center text-2xl font-black text-white shadow-lg">
+                  <div className="w-20 h-20 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl mx-auto mb-6 flex items-center justify-center text-2xl font-black text-white shadow-xl shadow-orange-600/30">
                     DF
                   </div>
-                  <h3 className="text-2xl font-black text-gray-900 mb-3">
+                  <h3 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 mb-3">
                     Build Your First Workflow
                   </h3>
-                  <p className="text-sm text-gray-600 mb-6 leading-relaxed">
+                  <p className="text-sm text-gray-400 mb-6 leading-relaxed">
                     Drag nodes from the sidebar onto the canvas or click to add
                     them to your DeFi automation workflow
                   </p>
                   <button
                     onClick={() => setShowNodePalette(true)}
-                    className="px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-600 text-white font-bold rounded-lg hover:shadow-xl transition-all duration-200 text-sm inline-flex items-center gap-2"
+                    className="px-6 py-3 bg-gradient-to-r from-orange-500 to-amber-600 text-white font-bold rounded-lg hover:shadow-xl hover:shadow-orange-600/30 hover:scale-105 active:scale-95 transition-all duration-200 text-sm inline-flex items-center gap-2"
                   >
                     <svg
                       className="w-5 h-5"
@@ -2148,13 +2149,13 @@ export default function WorkflowBuilderPage() {
 
         {/* Properties Panel */}
         {selectedNode && (
-          <div className="w-80 bg-white border-l border-gray-200 overflow-y-auto shadow-lg">
+          <div className="w-80 bg-gradient-to-b from-gray-900 to-black border-l border-gray-800 overflow-y-auto shadow-2xl">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-black text-gray-900">Properties</h2>
+                <h2 className="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">Properties</h2>
                 <button
                   onClick={() => setSelectedNode(null)}
-                  className="text-gray-400 hover:text-gray-600 transition"
+                  className="text-gray-500 hover:text-gray-200 transition-all p-2 rounded-lg hover:bg-gray-800"
                 >
                   <svg
                     className="w-5 h-5"
@@ -2174,14 +2175,14 @@ export default function WorkflowBuilderPage() {
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
                     Node Type
                   </label>
                   <div
                     className={`px-4 py-3 bg-gradient-to-br ${
                       NODE_TYPES.find((n) => n.type === selectedNode.data.type)
                         ?.color
-                    } text-white rounded-lg font-semibold text-sm`}
+                    } text-white rounded-lg font-semibold text-sm shadow-lg`}
                   >
                     {
                       NODE_TYPES.find((n) => n.type === selectedNode.data.type)
@@ -2191,7 +2192,7 @@ export default function WorkflowBuilderPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-300 mb-2">
                     Node Name
                   </label>
                   <input
@@ -2200,13 +2201,13 @@ export default function WorkflowBuilderPage() {
                     onChange={(e) =>
                       updateNodeLabel(selectedNode.id, e.target.value)
                     }
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none transition text-sm"
+                    className="w-full px-4 py-3 bg-gray-800 border border-gray-700 text-gray-100 rounded-lg focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 focus:outline-none transition text-sm placeholder:text-gray-500"
                     placeholder="Enter node name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-3">
+                  <label className="block text-sm font-semibold text-gray-300 mb-3">
                     Configuration
                   </label>
                   <NodeConfigPanel
@@ -2224,7 +2225,7 @@ export default function WorkflowBuilderPage() {
 
                 <button
                   onClick={deleteSelectedNode}
-                  className="w-full px-4 py-3 bg-red-50 text-red-700 font-semibold rounded-lg hover:bg-red-100 transition border border-red-200 text-sm"
+                  className="w-full px-4 py-3 bg-red-900/30 text-red-400 font-semibold rounded-lg hover:bg-red-900/50 hover:text-red-300 transition-all border border-red-800/50 text-sm hover:shadow-lg hover:shadow-red-900/20"
                 >
                   Delete Node
                 </button>

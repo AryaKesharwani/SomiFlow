@@ -134,25 +134,35 @@ export function AIWorkflowBuilder({
     conversation.length > 0 && conversation[conversation.length - 1].workflow;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
-      <div className="bg-gray-900/95 backdrop-blur-md rounded-2xl overflow-hidden shadow-2xl w-full max-w-5xl h-[85vh] flex flex-col border-2 border-gray-800">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 animate-in fade-in duration-200">
+      <div className="bg-gradient-to-br from-gray-900 via-gray-900 to-black backdrop-blur-xl rounded-3xl overflow-hidden shadow-2xl shadow-blue-900/20 w-full max-w-5xl h-[85vh] flex flex-col border border-gray-800/50 animate-in slide-in-from-bottom-4 duration-300">
         {/* Header */}
-        <div className="px-5 py-3 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 border-b-2 border-gray-800 flex items-center justify-between flex-shrink-0">
-          <div>
-            <h2 className="text-xl font-black text-gray-100">
-              AI Workflow Builder
-            </h2>
-            <p className="text-gray-400 text-xs mt-1 font-medium">
-              Describe your DeFi workflow in natural language, powered by ASI Alliance
-            </p>
+        <div className="relative px-6 py-4 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-cyan-600/10 border-b border-gray-800/50 flex items-center justify-between flex-shrink-0 backdrop-blur-sm">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-600/5 via-purple-600/5 to-cyan-600/5 animate-pulse"></div>
+          
+          <div className="relative z-10 flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-600 flex items-center justify-center shadow-lg shadow-blue-600/30">
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <div>
+              <h2 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-cyan-100">
+                AI Workflow Builder
+              </h2>
+              <p className="text-gray-400 text-xs mt-0.5 font-medium flex items-center gap-1.5">
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse shadow-lg shadow-green-500/50"></span>
+                Powered by ASI Alliance • Natural Language DeFi
+              </p>
+            </div>
           </div>
           <button
             onClick={handleClose}
-            className="text-gray-500 hover:text-gray-200 transition-colors p-2 rounded-lg hover:bg-gray-800"
+            className="relative z-10 text-gray-400 hover:text-white transition-all p-2.5 rounded-xl hover:bg-gray-800/50 hover:shadow-lg hover:scale-110 active:scale-95 group"
             title="Close"
           >
             <svg
-              className="w-6 h-6"
+              className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -168,33 +178,52 @@ export function AIWorkflowBuilder({
         </div>
 
         {/* Conversation History */}
-        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3 bg-gray-950 min-h-0">
+        <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4 bg-gradient-to-b from-black to-gray-950 min-h-0 scrollbar-thin scrollbar-thumb-gray-800 scrollbar-track-transparent">
           {conversation.length === 0 ? (
-            <div className="text-center py-6">
-              
-              <h3 className="text-lg font-black text-gray-100 mb-2">
+            <div className="text-center py-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <div className="mb-6 inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600/20 to-cyan-600/20 shadow-lg shadow-blue-600/10">
+                <svg className="w-10 h-10 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 mb-3">
                 Start with a Prompt
               </h3>
-              <p className="text-gray-400 text-xs max-w-md mx-auto mb-3 font-medium">
-                Describe what you want to do. Here are some examples:
+              <p className="text-gray-400 text-sm max-w-md mx-auto mb-6 font-medium leading-relaxed">
+                Describe your DeFi workflow in natural language. The AI will understand and generate the perfect workflow for you.
               </p>
-              <div className="space-y-2 text-left max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-2">
-                <div className="bg-gray-800/50 border border-gray-700 hover:border-blue-600 rounded-lg p-2 transition-all hover:shadow-md cursor-pointer group">
-                  <Terminal className="w-full bg-gray-950/80 border-gray-700 max-h-[100px]" sequence={false}>
-                    <AnimatedSpan className="text-blue-400 text-[10px]" startOnView={false}>$ swap USDC ETH</AnimatedSpan>
-                    
+              <div className="space-y-2 text-left max-w-2xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="group bg-gradient-to-br from-gray-800/80 to-gray-900/80 border border-gray-700/50 hover:border-blue-500/50 rounded-xl p-3 transition-all duration-300 hover:shadow-xl hover:shadow-blue-600/10 hover:scale-105 cursor-pointer backdrop-blur-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-600 to-blue-700 flex items-center justify-center shadow-lg shadow-blue-600/30">
+                      <span className="text-white text-xs font-black">SW</span>
+                    </div>
+                    <span className="text-xs font-bold text-gray-300 group-hover:text-white transition-colors">Token Swap</span>
+                  </div>
+                  <Terminal className="w-full bg-black/90 border-gray-700/50 max-h-[80px] shadow-inner" sequence={false}>
+                    <AnimatedSpan className="text-blue-400 text-[11px] font-mono" startOnView={false}>$ swap USDC ETH</AnimatedSpan>
                   </Terminal>
                 </div>
-                <div className="bg-gray-800/50 border border-gray-700 hover:border-blue-600 rounded-lg p-2 transition-all hover:shadow-md cursor-pointer group">
-                  <Terminal className="w-full bg-gray-950/80 border-gray-700 max-h-[100px]" sequence={false}>
-                    <AnimatedSpan className="text-purple-400 text-[10px]" startOnView={false}>$ yield USDC</AnimatedSpan>
-                    
+                <div className="group bg-gradient-to-br from-gray-800/80 to-gray-900/80 border border-gray-700/50 hover:border-purple-500/50 rounded-xl p-3 transition-all duration-300 hover:shadow-xl hover:shadow-purple-600/10 hover:scale-105 cursor-pointer backdrop-blur-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-purple-600 to-purple-700 flex items-center justify-center shadow-lg shadow-purple-600/30">
+                      <span className="text-white text-xs font-black">AA</span>
+                    </div>
+                    <span className="text-xs font-bold text-gray-300 group-hover:text-white transition-colors">Yield Strategy</span>
+                  </div>
+                  <Terminal className="w-full bg-black/90 border-gray-700/50 max-h-[80px] shadow-inner" sequence={false}>
+                    <AnimatedSpan className="text-purple-400 text-[11px] font-mono" startOnView={false}>$ yield USDC</AnimatedSpan>
                   </Terminal>
                 </div>
-                <div className="bg-gray-800/50 border border-gray-700 hover:border-blue-600 rounded-lg p-2 transition-all hover:shadow-md cursor-pointer group">
-                  <Terminal className="w-full bg-gray-950/80 border-gray-700 max-h-[100px]" sequence={false}>
-                    <AnimatedSpan className="text-purple-400 text-[10px]" startOnView={false}>$ yield USDC</AnimatedSpan>
-      
+                <div className="group bg-gradient-to-br from-gray-800/80 to-gray-900/80 border border-gray-700/50 hover:border-green-500/50 rounded-xl p-3 transition-all duration-300 hover:shadow-xl hover:shadow-green-600/10 hover:scale-105 cursor-pointer backdrop-blur-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-green-600 to-green-700 flex items-center justify-center shadow-lg shadow-green-600/30">
+                      <span className="text-white text-xs font-black">TF</span>
+                    </div>
+                    <span className="text-xs font-bold text-gray-300 group-hover:text-white transition-colors">DCA Strategy</span>
+                  </div>
+                  <Terminal className="w-full bg-black/90 border-gray-700/50 max-h-[80px] shadow-inner" sequence={false}>
+                    <AnimatedSpan className="text-green-400 text-[11px] font-mono" startOnView={false}>$ DCA ETH weekly</AnimatedSpan>
                   </Terminal>
                 </div>
               </div>
@@ -295,26 +324,26 @@ export function AIWorkflowBuilder({
 
           {isGenerating && (
             <div className="flex justify-start">
-              <div className="max-w-[80%] rounded-xl px-4 py-3 bg-gray-800 border-2 border-gray-700 shadow-md">
+              <div className="max-w-[80%] rounded-xl px-4 py-3 bg-gradient-to-br from-gray-800/80 to-gray-900/80 border border-gray-700/50 shadow-lg shadow-blue-600/10">
                 <div className="flex items-center gap-2">
-                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-black">
+                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-xs font-black shadow-lg shadow-blue-600/30">
                     AI
                   </div>
                   <div className="flex gap-1">
                     <span
-                      className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce"
+                      className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce shadow-lg shadow-blue-500/50"
                       style={{ animationDelay: "0ms" }}
                     ></span>
                     <span
-                      className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce"
+                      className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce shadow-lg shadow-blue-500/50"
                       style={{ animationDelay: "150ms" }}
                     ></span>
                     <span
-                      className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce"
+                      className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce shadow-lg shadow-blue-500/50"
                       style={{ animationDelay: "300ms" }}
                     ></span>
                   </div>
-                  <span className="text-xs text-gray-300 font-semibold">
+                  <span className="text-xs text-gray-200 font-semibold">
                     Generating workflow...
                   </span>
                 </div>
@@ -324,8 +353,8 @@ export function AIWorkflowBuilder({
         </div>
 
         {/* Input Area */}
-        <div className="px-5 py-3 border-t-2 border-gray-800 bg-gray-900/80 flex-shrink-0">
-          <div className="flex gap-2">
+        <div className="px-6 py-4 border-t border-gray-800/50 bg-gradient-to-b from-gray-900 to-black flex-shrink-0 backdrop-blur-sm">
+          <div className="flex gap-3">
             <textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
@@ -340,23 +369,35 @@ export function AIWorkflowBuilder({
                   ? "Describe your workflow... (e.g., 'Swap ETH to USDC and supply to Aave')"
                   : "Refine the workflow... (e.g., 'Add slippage protection' or 'Use 1inch instead')"
               }
-              className="flex-1 bg-gray-800 text-gray-100 text-sm rounded-xl px-3 py-2 border-2 border-gray-700 focus:border-blue-600 focus:ring-2 focus:ring-blue-600/20 resize-none transition-all font-medium placeholder:text-gray-500"
+              className="flex-1 bg-gray-800/80 text-gray-100 text-sm rounded-xl px-4 py-3 border border-gray-700/50 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 resize-none transition-all font-medium placeholder:text-gray-500 shadow-inner backdrop-blur-sm"
               rows={2}
               disabled={isGenerating}
             />
             <button
               onClick={handleGenerate}
               disabled={isGenerating || !prompt.trim()}
-              className="px-4 bg-gradient-to-br from-blue-600 to-blue-700 text-white text-sm rounded-xl hover:from-blue-700 hover:to-blue-800 hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed font-bold flex items-center gap-2"
+              className="px-5 bg-gradient-to-br from-blue-600 to-blue-700 text-white text-sm rounded-xl hover:from-blue-700 hover:to-blue-800 hover:shadow-xl hover:shadow-blue-600/30 hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed font-bold flex items-center gap-2 shadow-lg shadow-blue-600/20"
             >
               {isGenerating ? (
                 <>
-                  <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                   <span>Thinking...</span>
                 </>
               ) : conversation.length === 0 ? (
                 <>
-                  
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
+                  </svg>
                   <span>Generate</span>
                 </>
               ) : (
@@ -380,14 +421,14 @@ export function AIWorkflowBuilder({
             </button>
           </div>
 
-          <div className="flex items-center justify-between mt-2">
+          <div className="flex items-center justify-between mt-3">
             <div className="text-xs text-gray-500 font-medium">
               Press{" "}
-              <kbd className="px-1.5 py-0.5 bg-gray-800 border border-gray-700 rounded text-xs font-semibold text-gray-300">
+              <kbd className="px-2 py-1 bg-gray-800/80 border border-gray-700/50 rounded text-xs font-semibold text-gray-300 shadow-sm">
                 Enter
               </kbd>{" "}
               to send,{" "}
-              <kbd className="px-1.5 py-0.5 bg-gray-800 border border-gray-700 rounded text-xs font-semibold text-gray-300">
+              <kbd className="px-2 py-1 bg-gray-800/80 border border-gray-700/50 rounded text-xs font-semibold text-gray-300 shadow-sm">
                 Shift+Enter
               </kbd>{" "}
               for new line
@@ -396,7 +437,7 @@ export function AIWorkflowBuilder({
               {conversation.length > 0 && (
                 <button
                   onClick={handleStartOver}
-                  className="px-3 py-1.5 text-xs text-gray-400 hover:text-gray-100 transition-colors rounded-lg hover:bg-gray-800 font-semibold"
+                  className="px-4 py-2 text-xs text-gray-400 hover:text-gray-100 transition-all rounded-lg hover:bg-gray-800/50 font-semibold hover:scale-105 active:scale-95"
                 >
                   Start Over
                 </button>
@@ -404,7 +445,7 @@ export function AIWorkflowBuilder({
               {hasWorkflow && (
                 <button
                   onClick={handleApply}
-                  className="px-4 py-1.5 bg-gradient-to-br from-green-600 to-green-700 text-white text-xs rounded-lg hover:from-green-700 hover:to-green-800 hover:shadow-lg transition-all font-bold flex items-center gap-1.5"
+                  className="px-5 py-2 bg-gradient-to-br from-green-600 to-green-700 text-white text-xs rounded-lg hover:from-green-700 hover:to-green-800 hover:shadow-xl hover:shadow-green-600/30 hover:scale-105 active:scale-95 transition-all font-bold flex items-center gap-2 shadow-lg shadow-green-600/20"
                 >
                   <svg
                     className="w-4 h-4"
