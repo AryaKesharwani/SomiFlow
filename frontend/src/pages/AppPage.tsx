@@ -57,6 +57,7 @@ const EXPLORER_URLS: Record<string, string> = {
   optimismsepolia: "https://sepolia-optimism.etherscan.io",
   avalanchefuji: "https://testnet.snowtrace.io",
   polygonmumbai: "https://mumbai.polygonscan.com",
+  somnia: "https://shannon-explorer.somnia.network",
 };
 
 // Blockscout chain IDs mapping - all supported chains
@@ -77,6 +78,7 @@ const BLOCKSCOUT_CHAIN_IDS: Record<number, string> = {
   11155420: "11155420", // Optimism Sepolia
   43113: "43113", // Avalanche Fuji
   80001: "80001", // Polygon Mumbai
+  50312: "50312", // Somnia Testnet
 };
 
 export default function AppPage() {

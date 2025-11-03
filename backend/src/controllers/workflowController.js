@@ -12,6 +12,7 @@ import {
 } from '../config/vincent.js';
 import { wrapETH, getWETHBalance } from '../utils/wethWrapper.js';
 import { transferNativeToken, transferERC20Token } from '../utils/tokenTransfer.js';
+import { transferSomniaNative, transferSomniaERC20 } from '../utils/somniaTransactions.js';
 import { resolveAaveToken } from '../config/aaveTokens.js';
 
 export const getWorkflows = async (req, res) => {
@@ -1065,32 +1066,56 @@ async function executeTransferNode(node, pkpInfo, previousOutputs = []) {
   try {
     // Determine if this is a native token or ERC20 transfer
     const isNativeETH = config.token.toLowerCase() === '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ||
-                        config.token.toLowerCase() === 'eth';
+                        config.token.toLowerCase() === 'eth' ||
+                        config.token.toLowerCase() === 'stt'; // Somnia native token
 
     let transferResult;
 
-    if (isNativeETH) {
-      // Transfer native ETH
-      console.log('   → Transferring native ETH...');
-      
-      transferResult = await transferNativeToken({
-        chainName: config.chain,
-        recipient: recipient,
-        amount: amount.toString(),
-        userPkpAddress: delegatorPkpEthAddress,
-      });
+    // Check if this is a Somnia chain transfer
+    const isSomniaChain = config.chain.toLowerCase() === 'somnia';
+
+    if (isSomniaChain) {
+      // Use Somnia-specific transfer functions
+      if (isNativeETH) {
+        console.log('   → Transferring native STT on Somnia...');
+        
+        transferResult = await transferSomniaNative({
+          recipient: recipient,
+          amount: amount.toString(),
+          userPkpAddress: delegatorPkpEthAddress,
+        });
+      } else {
+        console.log('   → Transferring ERC20 token on Somnia...');
+        
+        transferResult = await transferSomniaERC20({
+          tokenAddress: config.token,
+          recipient: recipient,
+          amount: amount.toString(),
+          userPkpAddress: delegatorPkpEthAddress,
+        });
+      }
     } else {
-      // Transfer ERC20 token
-      console.log('   → Transferring ERC20 token...');
-      
-      // Assume config.token is the token address for ERC20
-      transferResult = await transferERC20Token({
-        chainName: config.chain,
-        tokenAddress: config.token,
-        recipient: recipient,
-        amount: amount.toString(),
-        userPkpAddress: delegatorPkpEthAddress,
-      });
+      // Use standard multi-chain transfer functions
+      if (isNativeETH) {
+        console.log('   → Transferring native ETH...');
+        
+        transferResult = await transferNativeToken({
+          chainName: config.chain,
+          recipient: recipient,
+          amount: amount.toString(),
+          userPkpAddress: delegatorPkpEthAddress,
+        });
+      } else {
+        console.log('   → Transferring ERC20 token...');
+        
+        transferResult = await transferERC20Token({
+          chainName: config.chain,
+          tokenAddress: config.token,
+          recipient: recipient,
+          amount: amount.toString(),
+          userPkpAddress: delegatorPkpEthAddress,
+        });
+      }
     }
 
     if (!transferResult.success) {

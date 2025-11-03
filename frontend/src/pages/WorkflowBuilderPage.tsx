@@ -2,7 +2,6 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   ReactFlow,
-  MiniMap,
   Controls,
   Background,
   useNodesState,
@@ -795,6 +794,7 @@ const SwapConfig = ({
             <option value="optimismsepolia">Optimism Sepolia</option>
             <option value="avalanchefuji">Avalanche Fuji</option>
             <option value="polygonmumbai">Polygon Mumbai</option>
+            <option value="somnia">Somnia Testnet</option>
           </optgroup>
         </select>
       </div>
@@ -1004,6 +1004,7 @@ const AaveConfig = ({
             <option value="optimismsepolia">Optimism Sepolia</option>
             <option value="avalanchefuji">Avalanche Fuji</option>
             <option value="polygonmumbai">Polygon Mumbai</option>
+            <option value="somnia">Somnia Testnet</option>
           </optgroup>
         </select>
       </div>

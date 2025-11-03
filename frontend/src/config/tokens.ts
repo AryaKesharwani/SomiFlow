@@ -429,6 +429,23 @@ export const POPULAR_TOKENS = {
       decimals: 18,
     },
   ],
+
+  // Somnia Testnet
+  somnia: [
+    {
+      symbol: "STT",
+      name: "Somnia Test Token",
+      address: "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+      decimals: 18,
+    },
+    {
+      symbol: "WSTT",
+      name: "Wrapped STT",
+      address: "0x4200000000000000000000000000000000000006", // Update with actual address when available
+      decimals: 18,
+    },
+    // Add more Somnia testnet tokens as they become available
+  ],
 };
 
 // Helper function to get tokens for a specific chain

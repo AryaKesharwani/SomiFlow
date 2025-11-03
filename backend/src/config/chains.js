@@ -113,11 +113,12 @@ export const SUPPORTED_CHAINS = {
     wrappedNativeToken: "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889", // WMATIC
   },
   somnia: {
-    chainId: 23111,
+    chainId: 50312,
     name: "Somnia Testnet",
-    rpcUrl: process.env.RPC_SOMNIA || "https://rpc-testnet.somnia.network",
+    rpcUrl: process.env.RPC_SOMNIA || "https://dream-rpc.somnia.network/",
     nativeCurrency: "STT",
     wrappedNativeToken: "0x4200000000000000000000000000000000000006", // WSTT (placeholder, update when available)
+    explorerUrl: "https://shannon-explorer.somnia.network",
   },
 };
 
