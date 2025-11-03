@@ -137,13 +137,6 @@ const NODE_TYPES = [
     description: "Exchange tokens on DEX",
   },
   {
-    type: "aave",
-    label: "Aave Protocol",
-    icon: "aave",
-    color: "from-purple-400 to-purple-600",
-    description: "Supply or borrow assets",
-  },
-  {
     type: "transfer",
     label: "Token Transfer",
     icon: "transfer",
@@ -709,8 +702,15 @@ const SwapConfig = ({
   config: any;
   onUpdate: (config: any) => void;
 }) => {
-  const chain = config.chain || "base";
+  const chain = config.chain || "somnia";
   const availableTokens = getTokensForChain(chain);
+
+  // Initialize chain in config if not set
+  useEffect(() => {
+    if (!config.chain) {
+      onUpdate({ ...config, chain: "somnia" });
+    }
+  }, []);
 
   // Track whether user is using custom address
   const [fromTokenMode, setFromTokenMode] = useState<"preset" | "custom">(
@@ -777,25 +777,7 @@ const SwapConfig = ({
           onChange={(e) => handleChainChange(e.target.value)}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-orange-500 focus:outline-none"
         >
-          <optgroup label="Mainnets">
-            <option value="ethereum">Ethereum</option>
-            <option value="polygon">Polygon</option>
-            <option value="arbitrum">Arbitrum</option>
-            <option value="optimism">Optimism</option>
-            <option value="base">Base</option>
-            <option value="bnb">BNB Chain</option>
-            <option value="avalanche">Avalanche</option>
-            <option value="celo">Celo</option>
-          </optgroup>
-          <optgroup label="Testnets">
-            <option value="sepolia">Sepolia</option>
-            <option value="basesepolia">Base Sepolia</option>
-            <option value="arbitrumsepolia">Arbitrum Sepolia</option>
-            <option value="optimismsepolia">Optimism Sepolia</option>
-            <option value="avalanchefuji">Avalanche Fuji</option>
-            <option value="polygonmumbai">Polygon Mumbai</option>
-            <option value="somnia">Somnia Testnet</option>
-          </optgroup>
+          <option value="somnia">Somnia Testnet</option>
         </select>
       </div>
 
@@ -950,156 +932,6 @@ const SwapConfig = ({
   );
 };
 
-const AaveConfig = ({
-  config,
-  onUpdate,
-}: {
-  config: any;
-  onUpdate: (config: any) => void;
-}) => {
-  const action = config.action || "supply";
-  const chain = config.chain || "base";
-
-  // Common Aave tokens per chain
-  const aaveTokens: Record<string, string[]> = {
-    base: ["USDC", "WETH", "cbETH", "USDbC"],
-    basesepolia: ["USDC", "WETH", "DAI"],
-    ethereum: ["USDC", "WETH", "USDT", "DAI", "WBTC", "LINK"],
-    sepolia: ["USDC", "WETH", "DAI", "LINK"],
-    polygon: ["USDC", "WETH", "WMATIC", "USDT", "DAI", "WBTC"],
-    arbitrum: ["USDC", "WETH", "USDT", "DAI", "WBTC", "LINK"],
-    arbitrumsepolia: ["USDC", "WETH", "DAI"],
-    optimism: ["USDC", "WETH", "USDT", "DAI", "WBTC", "LINK"],
-    optimismsepolia: ["USDC", "WETH", "DAI"],
-    avalanche: ["USDC", "WAVAX", "WETH", "USDT", "DAI", "WBTC"],
-    avalanchefuji: ["USDC", "WAVAX", "WETH"],
-  };
-
-  const availableTokens = aaveTokens[chain] || [];
-
-  return (
-    <div className="space-y-3">
-      <div>
-        <label className="block text-xs font-semibold text-gray-700 mb-2">
-          Chain
-        </label>
-        <select
-          value={chain}
-          onChange={(e) => onUpdate({ ...config, chain: e.target.value, asset: "" })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-orange-500 focus:outline-none"
-        >
-          <optgroup label="Mainnets">
-            <option value="ethereum">Ethereum</option>
-            <option value="polygon">Polygon</option>
-            <option value="arbitrum">Arbitrum</option>
-            <option value="optimism">Optimism</option>
-            <option value="base">Base</option>
-            <option value="bnb">BNB Chain</option>
-            <option value="avalanche">Avalanche</option>
-          </optgroup>
-          <optgroup label="Testnets">
-            <option value="sepolia">Sepolia</option>
-            <option value="basesepolia">Base Sepolia</option>
-            <option value="arbitrumsepolia">Arbitrum Sepolia</option>
-            <option value="optimismsepolia">Optimism Sepolia</option>
-            <option value="avalanchefuji">Avalanche Fuji</option>
-            <option value="polygonmumbai">Polygon Mumbai</option>
-            <option value="somnia">Somnia Testnet</option>
-          </optgroup>
-        </select>
-      </div>
-
-      <div>
-        <label className="block text-xs font-semibold text-gray-700 mb-2">
-          Action
-        </label>
-        <select
-          value={action}
-          onChange={(e) => onUpdate({ ...config, action: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-orange-500 focus:outline-none"
-        >
-          <option value="supply">Supply</option>
-          <option value="borrow">Borrow</option>
-          <option value="withdraw">Withdraw</option>
-          <option value="repay">Repay</option>
-        </select>
-      </div>
-
-      <div>
-        <label className="block text-xs font-semibold text-gray-700 mb-2">
-          Asset
-        </label>
-        <select
-          value={config.asset || ""}
-          onChange={(e) => onUpdate({ ...config, asset: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-orange-500 focus:outline-none"
-        >
-          <option value="">Select token...</option>
-          {availableTokens.map((token) => (
-            <option key={token} value={token}>
-              {token}
-            </option>
-          ))}
-        </select>
-        <p className="text-xs text-gray-500 mt-1">
-          Available Aave V3 tokens on {chain}
-        </p>
-      </div>
-
-      <div>
-        <label className="block text-xs font-semibold text-gray-700 mb-2">
-          Amount
-        </label>
-        <input
-          type="text"
-          value={config.amount || ""}
-          onChange={(e) => onUpdate({ ...config, amount: e.target.value })}
-          placeholder="0.00"
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-orange-500 focus:outline-none"
-        />
-      </div>
-
-      {(action === "borrow" || action === "repay") && (
-        <div>
-          <label className="block text-xs font-semibold text-gray-700 mb-2">
-            Interest Rate Mode
-          </label>
-          <select
-            value={config.interestRateMode || 2}
-            onChange={(e) =>
-              onUpdate({ ...config, interestRateMode: parseInt(e.target.value) })
-            }
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-orange-500 focus:outline-none"
-          >
-            <option value={1}>Stable Rate</option>
-            <option value={2}>Variable Rate</option>
-          </select>
-        </div>
-      )}
-
-      {action === "supply" && (
-        <div className="flex items-center gap-2">
-          <input
-            type="checkbox"
-            id="useAsCollateral"
-            checked={config.useAsCollateral || false}
-            onChange={(e) =>
-              onUpdate({ ...config, useAsCollateral: e.target.checked })
-            }
-            className="w-4 h-4 text-orange-500 border-gray-300 rounded focus:ring-orange-500"
-          />
-          <label
-            htmlFor="useAsCollateral"
-            className="text-xs font-semibold text-gray-700"
-          >
-            Use as collateral
-          </label>
-        </div>
-      )}
-    </div>
-  );
-};
-
 const TransferConfig = ({
   config,
   onUpdate,
@@ -1108,17 +940,23 @@ const TransferConfig = ({
   onUpdate: (config: any) => void;
 }) => {
   const [selectedChain, setSelectedChain] = useState(
-    config.chain || "basesepolia"
+    config.chain || "somnia"
   );
   const [selectedToken, setSelectedToken] = useState(config.token || "");
 
   const chains = [
-    { id: "basesepolia", name: "Base Sepolia" },
-    { id: "sepolia", name: "Sepolia" },
+    { id: "somnia", name: "Somnia Testnet" },
   ];
 
   const tokens =
     POPULAR_TOKENS[selectedChain as keyof typeof POPULAR_TOKENS] || [];
+
+  // Initialize chain in config if not set
+  useEffect(() => {
+    if (!config.chain) {
+      onUpdate({ ...config, chain: "somnia" });
+    }
+  }, []);
 
   const handleChainChange = (chain: string) => {
     setSelectedChain(chain);
@@ -1497,8 +1335,6 @@ const NodeConfigPanel = ({
       );
     case "swap":
       return <SwapConfig config={config} onUpdate={onUpdate} />;
-    case "aave":
-      return <AaveConfig config={config} onUpdate={onUpdate} />;
     case "transfer":
       return <TransferConfig config={config} onUpdate={onUpdate} />;
     case "condition":
