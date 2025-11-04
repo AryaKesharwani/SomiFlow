@@ -44,41 +44,11 @@ interface ChainBalance {
 }
 
 const EXPLORER_URLS: Record<string, string> = {
-  ethereum: "https://etherscan.io",
-  polygon: "https://polygonscan.com",
-  arbitrum: "https://arbiscan.io",
-  optimism: "https://optimistic.etherscan.io",
-  base: "https://basescan.org",
-  bnb: "https://bscscan.com",
-  avalanche: "https://snowtrace.io",
-  celo: "https://explorer.celo.org/mainnet",
-  sepolia: "https://sepolia.etherscan.io",
-  basesepolia: "https://sepolia.basescan.org",
-  arbitrumsepolia: "https://sepolia.arbiscan.io",
-  optimismsepolia: "https://sepolia-optimism.etherscan.io",
-  avalanchefuji: "https://testnet.snowtrace.io",
-  polygonmumbai: "https://mumbai.polygonscan.com",
   somnia: "https://shannon-explorer.somnia.network",
 };
 
 // Blockscout chain IDs mapping - all supported chains
 const BLOCKSCOUT_CHAIN_IDS: Record<number, string> = {
-  // Mainnets
-  1: "1", // Ethereum
-  137: "137", // Polygon
-  42161: "42161", // Arbitrum
-  10: "10", // Optimism
-  8453: "8453", // Base
-  56: "56", // BNB Chain
-  43114: "43114", // Avalanche
-  42220: "42220", // Celo
-  // Testnets
-  11155111: "11155111", // Sepolia
-  84532: "84532", // Base Sepolia
-  421614: "421614", // Arbitrum Sepolia
-  11155420: "11155420", // Optimism Sepolia
-  43113: "43113", // Avalanche Fuji
-  80001: "80001", // Polygon Mumbai
   50312: "50312", // Somnia Testnet
 };
 
