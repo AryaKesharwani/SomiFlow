@@ -10,7 +10,6 @@ import {
 } from '../config/vincent.js';
 import { wrapETH, getWETHBalance } from '../utils/wethWrapper.js';
 import { transferNativeToken, transferERC20Token } from '../utils/tokenTransfer.js';
-import { transferSomniaNative, transferSomniaERC20 } from '../utils/somniaTransactions.js';
 
 export const getWorkflows = async (req, res) => {
   try {
@@ -731,9 +730,6 @@ async function executeTransferNode(node, pkpInfo, previousOutputs = []) {
   if (!config.chain) {
     throw new Error('Transfer node missing required configuration: chain');
   }
-  if (!config.token) {
-    throw new Error('Transfer node missing required configuration: token');
-  }
   if (!recipient) {
     throw new Error('Transfer node missing required configuration: recipient or to');
   }
@@ -785,21 +781,44 @@ async function executeTransferNode(node, pkpInfo, previousOutputs = []) {
 
   try {
     // Determine if this is a native token or ERC20 transfer
-    const isNativeETH = config.token.toLowerCase() === '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ||
-                        config.token.toLowerCase() === 'eth' ||
-                        config.token.toLowerCase() === 'stt'; // Somnia native token
+    // On Somnia testnet: if no token address is provided, default to native STT
+    const tokenValue = (config.token || '').trim();
+    const tokenSymbol = (config.tokenSymbol || '').trim().toLowerCase();
+    const isSomniaChain = (config.chain || '').toLowerCase() === 'somnia';
+    
+    // Default to native token transfer if:
+    // 1. Token is empty/missing/not provided (especially on Somnia -> defaults to STT)
+    // 2. Token is the native ETH placeholder address
+    // 3. Token is explicitly "eth" or "stt" (case-insensitive)
+    // 4. TokenSymbol matches native currency (e.g., "STT" for Somnia)
+    const tokenLower = tokenValue.toLowerCase();
+    const isNativeToken = !tokenValue || 
+                          tokenValue === '' ||
+                          tokenLower === '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee' ||
+                          tokenLower === 'eth' ||
+                          tokenLower === 'stt' ||
+                          (isSomniaChain && (tokenSymbol === 'stt' || !tokenValue)) ||
+                          (tokenSymbol === 'eth' && !tokenValue);
+    
+    // On Somnia testnet: if no token provided, explicitly default to native STT
+    if (isSomniaChain && !tokenValue) {
+      console.log('   → No token address provided, defaulting to native STT on Somnia testnet');
+    }
+    
+    // If token is required for ERC20 transfer, validate it
+    if (!isNativeToken && !tokenValue) {
+      throw new Error('Transfer node missing required configuration: token (required for ERC20 transfers)');
+    }
 
     let transferResult;
 
-    // Check if this is a Somnia chain transfer
-    const isSomniaChain = config.chain.toLowerCase() === 'somnia';
-
     if (isSomniaChain) {
-      // Use Somnia-specific transfer functions
-      if (isNativeETH) {
+      // Use standard transfer functions with retry logic for Somnia
+      if (isNativeToken) {
         console.log('   → Transferring native STT on Somnia...');
         
-        transferResult = await transferSomniaNative({
+        transferResult = await transferNativeToken({
+          chainName: config.chain,
           recipient: recipient,
           amount: amount.toString(),
           userPkpAddress: delegatorPkpEthAddress,
@@ -807,7 +826,8 @@ async function executeTransferNode(node, pkpInfo, previousOutputs = []) {
       } else {
         console.log('   → Transferring ERC20 token on Somnia...');
         
-        transferResult = await transferSomniaERC20({
+        transferResult = await transferERC20Token({
+          chainName: config.chain,
           tokenAddress: config.token,
           recipient: recipient,
           amount: amount.toString(),
@@ -816,7 +836,7 @@ async function executeTransferNode(node, pkpInfo, previousOutputs = []) {
       }
     } else {
       // Use standard multi-chain transfer functions
-      if (isNativeETH) {
+      if (isNativeToken) {
         console.log('   → Transferring native ETH...');
         
         transferResult = await transferNativeToken({

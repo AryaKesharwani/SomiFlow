@@ -101,6 +101,7 @@ export const getBalances = async (req, res) => {
               "optimismsepolia",
               "avalanchefuji",
               "polygonmumbai",
+              "somnia",
             ].includes(chainKey),
           };
         } catch (error) {
@@ -121,6 +122,7 @@ export const getBalances = async (req, res) => {
               "optimismsepolia",
               "avalanchefuji",
               "polygonmumbai",
+              "somnia",
             ].includes(chainKey),
             error: error.message,
           };
