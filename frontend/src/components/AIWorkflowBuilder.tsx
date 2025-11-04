@@ -35,6 +35,7 @@ const NODE_TYPES_INFO: Record<
   },
   ai: { label: "ASI:One", color: "from-indigo-400 to-indigo-600", icon: "AI" },
   mcp: { label: "MCP Tool", color: "from-cyan-400 to-cyan-600", icon: "MC" },
+  staking: { label: "Somnia Staking", color: "from-purple-400 to-purple-600", icon: "ST" },
 };
 
 interface AIWorkflowBuilderProps {

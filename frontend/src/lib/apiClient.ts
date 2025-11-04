@@ -186,6 +186,56 @@ class ApiClient {
       message?: string;
     }>('/api/asi/health');
   }
+
+  // Staking endpoints
+  async stakeSomnia(amount: string, stakingContract?: string) {
+    return this.request<{
+      success: boolean;
+      txHash?: string;
+      amount?: string;
+      stakedBalance?: string;
+      blockNumber?: number;
+      gasUsed?: string;
+      chain?: string;
+      error?: string;
+    }>('/api/staking/somnia/stake', {
+      method: 'POST',
+      body: JSON.stringify({ amount, stakingContract }),
+    });
+  }
+
+  async unstakeSomnia(amount: string, stakingContract?: string) {
+    return this.request<{
+      success: boolean;
+      txHash?: string;
+      amount?: string;
+      stakedBalance?: string;
+      blockNumber?: number;
+      gasUsed?: string;
+      chain?: string;
+      error?: string;
+    }>('/api/staking/somnia/unstake', {
+      method: 'POST',
+      body: JSON.stringify({ amount, stakingContract }),
+    });
+  }
+
+  async getSomniaStakedBalance(address?: string, stakingContract?: string) {
+    const params = new URLSearchParams();
+    if (address) params.append('address', address);
+    if (stakingContract) params.append('stakingContract', stakingContract);
+    
+    return this.request<{
+      success: boolean;
+      stakedBalance?: string;
+      stakedBalanceWei?: string;
+      totalStaked?: string;
+      rewards?: string;
+      address?: string;
+      chain?: string;
+      error?: string;
+    }>(`/api/staking/somnia/balance?${params.toString()}`);
+  }
 }
 
 export const apiClient = new ApiClient();

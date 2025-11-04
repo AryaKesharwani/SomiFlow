@@ -8,6 +8,7 @@ import { useTransactionPopup } from "@blockscout/app-sdk";
 import { Terminal, TypingAnimation, AnimatedSpan } from "../components/ui/terminal";
 import { Spotlight } from "../components/ui/spotlight";
 import logo from "../assets/logo.svg";
+import SomniaStaking from "../components/SomniaStaking";
 
 interface Workflow {
   _id: string;
@@ -674,6 +675,19 @@ export default function AppPage() {
               )}
             </div>
           </div>
+
+          {/* Somnia Staking Section */}
+          {(() => {
+            const somniaBalance = balances.find(b => b.chainKey === 'somnia');
+            return somniaBalance ? (
+              <SomniaStaking 
+                sttBalance={somniaBalance.balance} 
+                onStakeSuccess={() => {
+                  fetchBalances();
+                }}
+              />
+            ) : null;
+          })()}
 
           {/* Workflows Section */}
           <div className="bg-gray-900/80 backdrop-blur-sm rounded-lg shadow-md mb-8 border border-gray-800">
