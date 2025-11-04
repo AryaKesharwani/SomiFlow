@@ -383,13 +383,32 @@ export default function AppPage() {
                   </div>
                   <div>
                     <h2 className="text-lg font-black text-gray-100">Account</h2>
-                    <p className="text-gray-400 text-xs font-mono">
-                      {user?.ethAddress.slice(0, 10)}...
-                      {user?.ethAddress.slice(-8)}
+                    <p className="text-gray-400 text-xs mb-1">Vincent PKP Address</p>
+                    <p className="text-gray-200 text-sm font-mono break-all">
+                      {user?.ethAddress}
                     </p>
                   </div>
                 </div>
-                <div className="flex gap-2 items-center">
+                <div className="flex items-center gap-4">
+                  {/* STT Balance Display */}
+                  {loadingBalances ? (
+                    <div className="animate-pulse">
+                      <div className="h-8 w-24 bg-gray-700 rounded"></div>
+                    </div>
+                  ) : (
+                    (() => {
+                      const sttBalance = balances.find(b => b.chainKey === 'somnia');
+                      return sttBalance ? (
+                        <div className="bg-blue-900/30 border border-blue-700/50 rounded-lg px-4 py-2">
+                          <p className="text-xs text-blue-300 font-semibold mb-0.5">STT Balance</p>
+                          <p className="text-lg font-black text-blue-100">
+                            {parseFloat(sttBalance.balance).toFixed(4)} <span className="text-sm text-blue-300">STT</span>
+                          </p>
+                        </div>
+                      ) : null;
+                    })()
+                  )}
+                  {/* Action buttons */}
                   {/* Chain selector for transactions */}
                   <select
                     value={selectedTxChainId || ""}
