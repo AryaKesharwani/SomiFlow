@@ -513,6 +513,19 @@ async function executeSwapNode(node, pkpInfo, previousOutputs = []) {
     throw new Error('Swap node missing required configuration (fromToken, toToken)');
   }
   
+  // Try to get chain from config, or inherit from previous outputs
+  if (!config.chain && previousOutputs.length > 0) {
+    // Search through previous outputs to find chain information
+    for (let i = previousOutputs.length - 1; i >= 0; i--) {
+      const prevOutput = previousOutputs[i];
+      if (prevOutput?.chain) {
+        config.chain = prevOutput.chain;
+        console.log(`   [Swap] Using chain from previous node: ${config.chain}`);
+        break;
+      }
+    }
+  }
+  
   if (!config.chain) {
     throw new Error('Swap node missing chain configuration');
   }
@@ -1028,7 +1041,21 @@ async function executeConditionNode(node, pkpInfo, previousOutputs = [], nodeMap
   
   console.log(`   [Condition] Result: ${conditionMet ? 'TRUE' : 'FALSE'}`);
   
-  return {
+  // Pass through chain information from previous outputs for downstream nodes
+  let chain = null;
+  if (previousOutputs.length > 0) {
+    // Look for chain in previous outputs (backwards search to get most recent)
+    for (let i = previousOutputs.length - 1; i >= 0; i--) {
+      const prevOutput = previousOutputs[i];
+      if (prevOutput?.chain) {
+        chain = prevOutput.chain;
+        console.log(`   [Condition] Passing through chain from previous node: ${chain}`);
+        break;
+      }
+    }
+  }
+  
+  const result = {
     success: true,
     conditionMet,
     value1,
@@ -1036,6 +1063,13 @@ async function executeConditionNode(node, pkpInfo, previousOutputs = [], nodeMap
     value2,
     message: `Condition ${value1} ${operator} ${value2} is ${conditionMet ? 'TRUE' : 'FALSE'}`,
   };
+  
+  // Include chain if found
+  if (chain) {
+    result.chain = chain;
+  }
+  
+  return result;
 }
 
 // Helper function to extract numeric values from various output formats
