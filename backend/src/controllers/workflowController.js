@@ -10,6 +10,7 @@ import {
 } from '../config/vincent.js';
 import { wrapETH, getWETHBalance } from '../utils/wethWrapper.js';
 import { transferNativeToken, transferERC20Token } from '../utils/tokenTransfer.js';
+import { delegateStakeSomnia } from '../utils/somniaStaking.js';
 
 export const getWorkflows = async (req, res) => {
   try {
@@ -349,6 +350,11 @@ async function executeNode(node, nodeMap, edgeMap, executionSteps, pkpInfo, exec
       case 'mcp':
         result = await executeMCPNode(node, pkpInfo, previousOutputs);
         console.log(`│  ✓ MCP executed:`, result);
+        break;
+        
+      case 'staking':
+        result = await executeStakingNode(node, pkpInfo, previousOutputs);
+        console.log(`│  ✓ Staking executed:`, result);
         break;
         
       default:
@@ -1310,5 +1316,100 @@ async function executeBlockscoutMCP(config, pkpInfo, previousOutputs) {
   } catch (error) {
     console.error('   [Blockscout MCP] Error:', error);
     throw error;
+  }
+}
+
+async function executeStakingNode(node, pkpInfo, previousOutputs = []) {
+  const startTime = Date.now();
+  const config = node.config || {};
+  const operation = config.operation || 'delegateStake'; // Only 'delegateStake' is supported
+  
+  console.log('   [Staking] Executing staking operation...');
+  console.log(`   Operation: ${operation}`);
+  console.log(`   Config amount: ${config.amount || 'Not specified'}`);
+
+  // Validate required configuration
+  if (!config.amount) {
+    throw new Error('Staking node missing required configuration: amount');
+  }
+
+  // For delegateStake, validator address is required
+  if (!config.validatorAddress) {
+    throw new Error('Staking node missing required configuration: validatorAddress (required for delegateStake operation)');
+  }
+
+  // Determine amount: prefer config.amount but fall back to previous node outputs
+  let amount = config.amount;
+  if (!amount || amount === '') {
+    // Try to get amount from previous outputs
+    for (let i = previousOutputs.length - 1; i >= 0; i--) {
+      const prev = previousOutputs[i];
+      if (!prev) continue;
+      
+      if (prev.output && prev.output.amountReceived) {
+        amount = prev.output.amountReceived;
+        console.log(`   [Staking] Using amountReceived from previous node: ${amount}`);
+        break;
+      }
+      
+      if (prev.amountReceived) {
+        amount = prev.amountReceived;
+        console.log(`   [Staking] Using amountReceived from previous node: ${amount}`);
+        break;
+      }
+    }
+  }
+
+  if (!amount) {
+    throw new Error('Staking node missing required configuration: amount (no previous output to infer from)');
+  }
+
+  // Get PKP address
+  const userPkpAddress = pkpInfo.ethAddress;
+
+  try {
+    let result;
+    
+    if (operation === 'delegateStake') {
+      console.log(`   [Staking] Delegating stake of ${amount} STT to validator ${config.validatorAddress}...`);
+      result = await delegateStakeSomnia({
+        validatorAddress: config.validatorAddress,
+        amount: amount.toString(),
+        userPkpAddress,
+        stakingContract: config.stakingContract, // Optional, falls back to env var
+      });
+    } else {
+      throw new Error(`Invalid staking operation: ${operation}. Only 'delegateStake' is supported`);
+    }
+
+    if (!result.success) {
+      throw new Error(result.error || 'Staking operation failed');
+    }
+
+    const duration = Date.now() - startTime;
+    console.log(`   [Staking] Operation completed in ${duration}ms`);
+
+    return {
+      success: true,
+      operation,
+      amount,
+      txHash: result.txHash,
+      validatorAddress: result.validatorAddress,
+      blockNumber: result.blockNumber,
+      gasUsed: result.gasUsed,
+      chain: 'somnia',
+      chainId: 50312,
+      // Standardized output data for next nodes
+      output: {
+        operation,
+        amount,
+        txHash: result.txHash,
+        validatorAddress: result.validatorAddress,
+        amountReceived: amount, // For compatibility with transfer nodes
+      }
+    };
+  } catch (error) {
+    console.error(`   ✗ Staking failed:`, error.message);
+    throw new Error(`Staking execution failed: ${error.message}`);
   }
 }
