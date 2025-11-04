@@ -249,6 +249,22 @@ class ApiClient {
       error?: string;
     }>(`/api/staking/somnia/validators?${params.toString()}`);
   }
+
+  async delegateStakeSomnia(validatorAddress: string, amount: string, stakingContract?: string) {
+    return this.request<{
+      success: boolean;
+      txHash?: string;
+      amount?: string;
+      validatorAddress?: string;
+      blockNumber?: number;
+      gasUsed?: string;
+      chain?: string;
+      error?: string;
+    }>('/api/staking/somnia/delegate-stake', {
+      method: 'POST',
+      body: JSON.stringify({ validatorAddress, amount, stakingContract }),
+    });
+  }
 }
 
 export const apiClient = new ApiClient();
