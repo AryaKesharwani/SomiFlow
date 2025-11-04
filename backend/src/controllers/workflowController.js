@@ -2,7 +2,7 @@ import { getPKPInfo } from '@lit-protocol/vincent-app-sdk/jwt';
 import { ethers } from 'ethers';
 import Workflow from '../models/Workflow.js';
 import ExecutionHistory from '../models/ExecutionHistory.js';
-import { getRpcUrl, getChainId, normalizeTokenAddress } from '../config/chains.js';
+import { getRpcUrl, getChainId, normalizeTokenAddress, getChainConfig } from '../config/chains.js';
 import {
   generateSignedUniswapQuote,
   getUniswapSwapAbilityClient,
@@ -11,6 +11,7 @@ import {
 import { wrapETH, getWETHBalance } from '../utils/wethWrapper.js';
 import { transferNativeToken, transferERC20Token } from '../utils/tokenTransfer.js';
 import { delegateStakeSomnia } from '../utils/somniaStaking.js';
+import { swapTokensUniswapV2 } from '../utils/somniaTransactions.js';
 
 export const getWorkflows = async (req, res) => {
   try {
@@ -448,6 +449,61 @@ function getTokenSymbol(tokenAddressOrSymbol) {
   return tokenMap[tokenAddressOrSymbol.toLowerCase()] || 'UNKNOWN';
 }
 
+/**
+ * Execute Uniswap V2 swap on Somnia
+ */
+async function executeSomniaUniswapV2Swap(config, amount, delegatorPkpEthAddress) {
+  console.log('   [Swap] Using Uniswap V2 for Somnia...');
+  
+  // Normalize token addresses
+  const normalizedFromToken = normalizeTokenAddress(config.chain, config.fromToken);
+  const normalizedToToken = normalizeTokenAddress(config.chain, config.toToken);
+  
+  console.log(`   → Normalized addresses:`);
+  console.log(`     From: ${config.fromToken} → ${normalizedFromToken}`);
+  console.log(`     To: ${config.toToken} → ${normalizedToToken}`);
+  
+  // Execute swap using Uniswap V2
+  const swapResult = await swapTokensUniswapV2({
+    tokenInAddress: normalizedFromToken,
+    tokenOutAddress: normalizedToToken,
+    amountIn: amount.toString(),
+    slippage: (config.slippage || 0.5).toString(),
+    userPkpAddress: delegatorPkpEthAddress,
+  });
+  
+  if (!swapResult.success) {
+    throw new Error(`Uniswap V2 swap failed: ${swapResult.error || 'Unknown error'}`);
+  }
+  
+  // Get token symbol for output
+  const toTokenSymbol = getTokenSymbol(config.toToken);
+  const toTokenDecimals = config.toTokenDecimals || 18;
+  
+  return {
+    success: true,
+    message: 'Swap executed successfully via Uniswap V2',
+    chain: config.chain,
+    chainId: getChainId(config.chain),
+    fromToken: config.fromToken,
+    toToken: config.toToken,
+    amountIn: amount,
+    expectedAmountOut: swapResult.amountOut,
+    slippage: config.slippage || 0.5,
+    swapTxHash: swapResult.txHash,
+    txHash: swapResult.txHash, // Primary transaction hash for notifications
+    uniswapRouter: getChainConfig(config.chain).uniswapV2Router,
+    // Standardized output data for next nodes
+    output: {
+      tokenReceived: normalizedToToken,
+      tokenSymbol: toTokenSymbol,
+      amountReceived: swapResult.amountOut,
+      amountReceivedWei: swapResult.amountOutWei,
+      decimals: toTokenDecimals,
+    }
+  };
+}
+
 // Node-specific execution functions
 async function executeSwapNode(node, pkpInfo, previousOutputs = []) {
   const config = node.config || {};
@@ -488,17 +544,23 @@ async function executeSwapNode(node, pkpInfo, previousOutputs = []) {
     throw new Error('Swap node missing amount (not in config and not available from previous outputs)');
   }
   
-  console.log('   [Swap] Executing Uniswap swap via Vincent SDK...');
+  console.log('   [Swap] Executing Uniswap swap...');
   console.log(`   Chain: ${config.chain}`);
   console.log(`   From: ${amount} ${config.fromToken}`);
   console.log(`   To: ${config.toToken}`);
   console.log(`   Slippage: ${config.slippage || 0.5}%`);
   
   try {
-    // Get chain configuration
+    const delegatorPkpEthAddress = pkpInfo.ethAddress;
+    
+    // Use Uniswap V2 for Somnia, V3 for other chains
+    if (config.chain === 'somnia') {
+      return await executeSomniaUniswapV2Swap(config, amount, delegatorPkpEthAddress);
+    }
+    
+    // Get chain configuration for Uniswap V3
     const rpcUrl = getRpcUrl(config.chain);
     const chainId = getChainId(config.chain);
-    const delegatorPkpEthAddress = pkpInfo.ethAddress;
     
     // Normalize token addresses (convert native ETH placeholder to WETH)
     const normalizedFromToken = normalizeTokenAddress(config.chain, config.fromToken);

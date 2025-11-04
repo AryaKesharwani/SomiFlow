@@ -11,8 +11,10 @@ export const SUPPORTED_CHAINS = {
     name: "Somnia Testnet",
     rpcUrl: process.env.RPC_SOMNIA || "https://dream-rpc.somnia.network/",
     nativeCurrency: "STT",
-    wrappedNativeToken: "0x4200000000000000000000000000000000000006", // WSTT (placeholder, update when available)
+    wrappedNativeToken: "0xF22eF0085f6511f70b01a68F360dCc56261F768a", // WSTT
     explorerUrl: "https://shannon-explorer.somnia.network",
+    uniswapV2Router: "0xb98c15a0dC1e271132e341250703c7e94c059e8D", // Uniswap V2 Router
+    uniswapV2Factory: "0x31015A978c5815EdE29D0F969a17e116BC1866B1", // Uniswap V2 Factory
   },
 };
 
