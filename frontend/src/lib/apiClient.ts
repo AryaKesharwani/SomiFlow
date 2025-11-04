@@ -236,6 +236,19 @@ class ApiClient {
       error?: string;
     }>(`/api/staking/somnia/balance?${params.toString()}`);
   }
+
+  async getSomniaValidators(address?: string, name?: string) {
+    const params = new URLSearchParams();
+    if (address) params.append('address', address);
+    if (name) params.append('name', name);
+    
+    return this.request<{
+      success: boolean;
+      validators: Array<{ name: string; address: string }>;
+      count: number;
+      error?: string;
+    }>(`/api/staking/somnia/validators?${params.toString()}`);
+  }
 }
 
 export const apiClient = new ApiClient();
