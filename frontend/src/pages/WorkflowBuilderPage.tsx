@@ -1508,14 +1508,33 @@ export default function WorkflowBuilderPage() {
         }));
 
         // Convert AI edges to React Flow format
-        const flowEdges = (workflow.edges || []).map((edge: any) => ({
-          id: edge.id,
-          source: edge.source || edge.from,
-          target: edge.target || edge.to,
-          type: "smoothstep",
-          animated: true,
-          style: { stroke: "#f97316", strokeWidth: 2 },
-        }));
+        const flowEdges = (workflow.edges || []).map((edge: any) => {
+          // Determine if we need to set sourceHandle for condition node branching
+          const sourceNode = flowNodes.find((n: any) => n.id === edge.source);
+          const isConditionSource = sourceNode?.data?.type === "condition";
+          
+          // For condition nodes, map the edge label to the correct source handle
+          let sourceHandle = undefined;
+          if (isConditionSource && edge.label) {
+            const label = edge.label.toLowerCase();
+            if (label === "true" || label === "success") {
+              sourceHandle = "true";
+            } else if (label === "false" || label === "fail" || label === "failure") {
+              sourceHandle = "false";
+            }
+          }
+
+          return {
+            id: edge.id,
+            source: edge.source || edge.from,
+            target: edge.target || edge.to,
+            sourceHandle: sourceHandle,
+            label: edge.label || "",
+            type: "smoothstep",
+            animated: true,
+            style: { stroke: "#f97316", strokeWidth: 2 },
+          };
+        });
 
         setNodes(flowNodes);
         setEdges(flowEdges);
