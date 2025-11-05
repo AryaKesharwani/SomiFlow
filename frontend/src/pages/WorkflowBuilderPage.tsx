@@ -151,13 +151,6 @@ const NODE_TYPES = [
     description: "If/else branching logic",
   },
   {
-    type: "ai",
-    label: "ASI:One",
-    icon: "ai",
-    color: "from-indigo-400 to-indigo-600",
-    description: "ASI:One AI with agent connections",
-  },
-  {
     type: "staking",
     label: "Somnia Staking",
     icon: "staking",
@@ -1303,158 +1296,6 @@ const StakingConfig = ({
   );
 };
 
-const AIConfig = ({
-  config,
-  onUpdate,
-}: {
-  config: any;
-  onUpdate: (config: any) => void;
-}) => {
-  // Preset agents
-  const PRESET_AGENTS = [
-    {
-      name: "None",
-      address: "",
-      description: "No agent connection"
-    },
-    {
-      name: "Blockscout MCP Agent",
-      address: "agent1qfwanzm7l94lcd57p9zsl25y4p6clssp8xjjrd0f8f6nc9r3rx8h6978x2r",
-      description: "Real-time blockchain data (balances, transactions, NFTs)"
-    },
-    {
-      name: "Custom",
-      address: "custom",
-      description: "Enter custom agent address"
-    }
-  ];
-
-  const selectedPreset = PRESET_AGENTS.find(a => a.address === config.agentAddress) 
-    || (config.agentAddress ? PRESET_AGENTS[2] : PRESET_AGENTS[0]);
-  const isCustom = selectedPreset.address === "custom";
-
-  return (
-    <div className="space-y-3">
-      <div>
-        <label className="block text-xs font-semibold text-gray-700 mb-2">
-          Prompt
-          <span className="ml-2 text-indigo-600 font-normal">(ASI:One AI)</span>
-        </label>
-        <textarea
-          value={config.prompt || ""}
-          onChange={(e) => onUpdate({ ...config, prompt: e.target.value })}
-          placeholder="Analyze the previous transaction results and provide insights..."
-          rows={4}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-indigo-500 focus:outline-none resize-none"
-        />
-      </div>
-
-      <div>
-        <label className="block text-xs font-semibold text-gray-700 mb-2">
-          System Prompt (Optional)
-        </label>
-        <textarea
-          value={config.systemPrompt || ""}
-          onChange={(e) =>
-            onUpdate({ ...config, systemPrompt: e.target.value })
-          }
-          placeholder="You are a helpful DeFi analyst that provides clear insights..."
-          rows={2}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-indigo-500 focus:outline-none resize-none"
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <label className="block text-xs font-semibold text-gray-700 mb-2">
-            Temperature
-          </label>
-          <input
-            type="number"
-            value={config.temperature || 0.7}
-            onChange={(e) =>
-              onUpdate({ ...config, temperature: parseFloat(e.target.value) })
-            }
-            min="0"
-            max="1"
-            step="0.1"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-indigo-500 focus:outline-none"
-          />
-        </div>
-        <div>
-          <label className="block text-xs font-semibold text-gray-700 mb-2">
-            Max Tokens
-          </label>
-          <input
-            type="number"
-            value={config.maxTokens || 500}
-            onChange={(e) =>
-              onUpdate({ ...config, maxTokens: parseInt(e.target.value) })
-            }
-            min="50"
-            max="2000"
-            step="50"
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-indigo-500 focus:outline-none"
-          />
-        </div>
-      </div>
-
-      <div>
-        <label className="block text-xs font-semibold text-gray-700 mb-2">
-          Connect to Agent
-          <span className="ml-2 text-gray-500 font-normal">(Optional)</span>
-        </label>
-        <select
-          value={selectedPreset.address}
-          onChange={(e) => {
-            const selected = PRESET_AGENTS.find(a => a.address === e.target.value);
-            if (selected && selected.address !== "custom") {
-              onUpdate({ ...config, agentAddress: selected.address });
-            } else {
-              onUpdate({ ...config, agentAddress: "" });
-            }
-          }}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-indigo-500 focus:outline-none"
-        >
-          {PRESET_AGENTS.map((agent) => (
-            <option key={agent.address} value={agent.address}>
-              {agent.name}
-            </option>
-          ))}
-        </select>
-        {selectedPreset.description && (
-          <p className="mt-1 text-xs text-gray-500">
-            {selectedPreset.description}
-          </p>
-        )}
-      </div>
-
-      {isCustom && (
-        <div>
-          <label className="block text-xs font-semibold text-gray-700 mb-2">
-            Custom Agent Address
-          </label>
-          <input
-            type="text"
-            value={config.agentAddress || ""}
-            onChange={(e) =>
-              onUpdate({ ...config, agentAddress: e.target.value })
-            }
-            placeholder="agent1qf..."
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:border-indigo-500 focus:outline-none font-mono"
-          />
-        </div>
-      )}
-
-      <div className="p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
-        <p className="text-xs text-indigo-800">
-          💡 Connect to Agentverse agents to access real-time blockchain data, DeFi strategies, and more capabilities.
-        </p>
-      </div>
-    </div>
-  );
-};
-
 // Render appropriate config component based on node type
 const NodeConfigPanel = ({
   nodeType,
@@ -1501,8 +1342,6 @@ const NodeConfigPanel = ({
       return <TransferConfig config={config} onUpdate={onUpdate} />;
     case "condition":
       return <ConditionConfig config={config} onUpdate={onUpdate} />;
-    case "ai":
-      return <AIConfig config={config} onUpdate={onUpdate} />;
     case "staking":
       return <StakingConfig config={config} onUpdate={onUpdate} />;
     default:

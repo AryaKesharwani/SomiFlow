@@ -1,26 +1,26 @@
 /**
  * ASI Agent Routes
  * 
- * Endpoints for AI-powered workflow generation and agent interaction
+ * Endpoints for AI-powered workflow generation using OpenAI
  */
 
 import express from 'express';
 import { vincentHandler } from '../config/vincent.js';
 import { getPKPInfo } from '@lit-protocol/vincent-app-sdk/jwt';
 import {
-  generateWorkflowFromNL,
-  queryKnowledgeGraph,
-  searchAgents,
-  checkPythonBackendHealth,
-} from '../utils/asiAgents.js';
+  generateWorkflowFromPrompt,
+  refineWorkflow,
+} from '../utils/openaiWorkflowGenerator.js';
 
-const router = express.Router();/**
+const router = express.Router();
+
+/**
  * POST /api/asi/workflow/generate
- * Generate a workflow from natural language description
+ * Generate a workflow from natural language description using OpenAI
  */
 router.post('/workflow/generate', vincentHandler(async (req, res) => {
   try {
-    const { query } = req.body;
+    const { query, conversationHistory = [] } = req.body;
     const { decodedJWT } = req.vincentUser;
     const pkpInfo = getPKPInfo(decodedJWT);
     
@@ -31,21 +31,22 @@ router.post('/workflow/generate', vincentHandler(async (req, res) => {
       });
     }
 
-    console.log(`[ASI] Generating workflow for user: ${pkpInfo.ethAddress}`);
+    console.log(`[OpenAI] Generating workflow for user: ${pkpInfo.ethAddress}`);
     console.log(`   Query: "${query}"`);
 
-    const result = await generateWorkflowFromNL(query, pkpInfo.ethAddress);
+    const result = await generateWorkflowFromPrompt(query, conversationHistory);
 
-    console.log(`[ASI] Workflow generated successfully`);
-    console.log(`   Strategy: ${result.strategy || 'custom'}`);
-    console.log(`   Intent: ${result.intent}`);
+    console.log(`[OpenAI] Workflow generated successfully`);
+    console.log(`   Nodes: ${result.workflow.nodes.length}, Edges: ${result.workflow.edges.length}`);
 
     res.json({
       success: true,
-      ...result,
+      workflow: result.workflow,
+      explanation: result.explanation,
+      conversationHistory: result.conversationHistory,
     });
   } catch (error) {
-    console.error('[ASI] Error generating workflow:', error);
+    console.error('[OpenAI] Error generating workflow:', error);
     res.status(500).json({
       success: false,
       message: 'Failed to generate workflow',
@@ -55,43 +56,8 @@ router.post('/workflow/generate', vincentHandler(async (req, res) => {
 }));
 
 /**
- * POST /api/asi/knowledge/query
- * Query the MeTTa knowledge graph
- */
-router.post('/knowledge/query', vincentHandler(async (req, res) => {
-  try {
-    const { type, query } = req.body;
-    
-    if (!type || !query) {
-      return res.status(400).json({
-        success: false,
-        message: 'Both type and query are required',
-      });
-    }
-
-    console.log(`[ASI] Querying knowledge graph: ${type}(${query})`);
-
-    const result = await queryKnowledgeGraph(type, query);
-
-    console.log(`[ASI] Query successful, results: ${result.length}`);
-
-    res.json({
-      success: true,
-      result,
-    });
-  } catch (error) {
-    console.error('[ASI] Error querying knowledge graph:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to query knowledge graph',
-      error: error.message,
-    });
-  }
-}));
-
-/**
  * POST /api/asi/workflow/refine
- * Refine an existing workflow based on user feedback
+ * Refine an existing workflow based on user feedback using OpenAI
  */
 router.post('/workflow/refine', vincentHandler(async (req, res) => {
   try {
@@ -106,22 +72,21 @@ router.post('/workflow/refine', vincentHandler(async (req, res) => {
       });
     }
 
-    console.log(`[ASI] Refining workflow for user: ${pkpInfo.ethAddress}`);
+    console.log(`[OpenAI] Refining workflow for user: ${pkpInfo.ethAddress}`);
     console.log(`   Feedback: "${query}"`);
 
-    const result = await generateWorkflowFromNL(query, pkpInfo.ethAddress, {
-      currentWorkflow,
-      conversationHistory,
-    });
+    const result = await refineWorkflow(query, currentWorkflow, conversationHistory);
 
-    console.log(`[ASI] Workflow refined successfully`);
+    console.log(`[OpenAI] Workflow refined successfully`);
 
     res.json({
       success: true,
-      ...result,
+      workflow: result.workflow,
+      explanation: result.explanation,
+      conversationHistory: result.conversationHistory,
     });
   } catch (error) {
-    console.error('[ASI] Error refining workflow:', error);
+    console.error('[OpenAI] Error refining workflow:', error);
     res.status(500).json({
       success: false,
       message: 'Failed to refine workflow',
@@ -131,52 +96,17 @@ router.post('/workflow/refine', vincentHandler(async (req, res) => {
 }));
 
 /**
- * POST /api/asi/agents/search
- * Search for agents on Agentverse
- */
-router.post('/agents/search', vincentHandler(async (req, res) => {
-  try {
-    const { query, semantic = false } = req.body;
-    
-    if (!query) {
-      return res.status(400).json({
-        success: false,
-        message: 'Query is required',
-      });
-    }
-
-    console.log(`[ASI] Searching for agents: "${query}" (semantic: ${semantic})`);
-
-    const agents = await searchAgents(query, semantic);
-
-    console.log(`[ASI] Found ${agents.length} agents`);
-
-    res.json({
-      success: true,
-      agents,
-    });
-  } catch (error) {
-    console.error('[ASI] Error searching agents:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to search agents',
-      error: error.message,
-    });
-  }
-}));
-
-/**
  * GET /api/asi/health
- * Check if ASI Python backend is healthy
+ * Check if OpenAI API is configured
  */
 router.get('/health', async (req, res) => {
   try {
-    const isHealthy = await checkPythonBackendHealth();
+    const isConfigured = !!process.env.OPENAI_API_KEY;
 
     res.json({
       success: true,
-      python_backend_healthy: isHealthy,
-      message: isHealthy ? 'Python backend is responsive' : 'Python backend is not responding',
+      openai_configured: isConfigured,
+      message: isConfigured ? 'OpenAI API is configured' : 'OpenAI API key is missing',
     });
   } catch (error) {
     res.status(500).json({
